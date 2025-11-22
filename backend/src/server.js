@@ -4,6 +4,7 @@ import cors from 'cors';
 import connectDB from './config/database.js';
 import authRoutes from './routes/authRoutes.js';
 import bicycleRoutes from './routes/bicycleRoutes.js';
+import chatRoutes from './routes/chatRoutes.js';
 import { errorHandler, notFound } from './middleware/errorMiddleware.js';
 
 // Load environment variables
@@ -37,7 +38,8 @@ app.get('/', (req, res) => {
     version: '1.0.0',
     endpoints: {
       auth: '/api/auth',
-      bicycles: '/api/bicycles'
+      bicycles: '/api/bicycles',
+      chats: '/api/chats'
     }
   });
 });
@@ -45,6 +47,7 @@ app.get('/', (req, res) => {
 // API Routes
 app.use('/api/auth', authRoutes);
 app.use('/api/bicycles', bicycleRoutes);
+app.use('/api/chats', chatRoutes);
 
 // Error handling middleware
 app.use(notFound);
@@ -77,6 +80,12 @@ app.listen(PORT, () => {
 ║   - PUT    /api/bicycles/:id                              ║
 ║   - DELETE /api/bicycles/:id                              ║
 ║   - GET    /api/bicycles/my-listings                      ║
+║                                                           ║
+║   Chat Endpoints:                                         ║
+║   - POST   /api/chats                                     ║
+║   - GET    /api/chats                                     ║
+║   - GET    /api/chats/:id                                 ║
+║   - POST   /api/chats/:id/messages                        ║
 ║                                                           ║
 ╚═══════════════════════════════════════════════════════════╝
   `);

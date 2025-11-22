@@ -1,131 +1,212 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import Navbar from "@/components/Navbar";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
+import Footer from "@/components/Footer";
 import { Card } from "@/components/ui/card";
-import { ArrowLeft, Send, Image } from "lucide-react";
-import { Link } from "react-router-dom";
+import { Avatar, AvatarFallback } from "@/components/ui/avatar";
+import { MessageCircle, Package } from "lucide-react";
+import { useToast } from "@/hooks/use-toast";
 
 const Chat = () => {
-  const [message, setMessage] = useState("");
+  const navigate = useNavigate();
+  const { toast } = useToast();
+  const [chats, setChats] = useState<any[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [currentUser, setCurrentUser] = useState<any>(null);
 
-  // Mock data
-  const messages = [
-    {
-      id: "1",
-      sender: "buyer",
-      text: "Hi, is this bicycle still available?",
-      timestamp: "10:30 AM",
-    },
-    {
-      id: "2",
-      sender: "seller",
-      text: "Yes, it's available! Would you like to see it?",
-      timestamp: "10:32 AM",
-    },
-    {
-      id: "3",
-      sender: "buyer",
-      text: "Great! Can we meet tomorrow at the campus ground?",
-      timestamp: "10:35 AM",
-    },
-    {
-      id: "4",
-      sender: "seller",
-      text: "Sure, how about 4 PM?",
-      timestamp: "10:36 AM",
-    },
-  ];
+  useEffect(() => {
+    const token = localStorage.getItem('token');
+    const userStr = localStorage.getItem('user');
+    
+    if (!token) {
+      navigate('/login');
+      return;
+    }
 
-  const handleSend = () => {
-    if (message.trim()) {
-      console.log("Sending:", message);
-      setMessage("");
+    if (userStr) {
+      setCurrentUser(JSON.parse(userStr));
+    }
+
+    fetchChats();
+  }, []);
+
+  const fetchChats = async () => {
+    const token = localStorage.getItem('token');
+    
+    try {
+      const response = await fetch('http://localhost:5000/api/chats', {
+        headers: {
+          'Authorization': `Bearer ${token}`
+        }
+      });
+
+      const data = await response.json();
+
+      if (data.success) {
+        setChats(data.data.chats);
+      } else {
+        toast({
+          title: "Error",
+          description: data.message || "Failed to load chats",
+          variant: "destructive",
+        });
+      }
+    } catch (error) {
+      console.error('Error fetching chats:', error);
+      toast({
+        title: "Error",
+        description: "Failed to load chats",
+        variant: "destructive",
+      });
+    } finally {
+      setLoading(false);
     }
   };
+
+  const getOtherUser = (chat: any) => {
+    return currentUser?.id === chat.buyer._id ? chat.seller : chat.buyer;
+  };
+
+  const getLastMessage = (chat: any) => {
+    if (chat.messages.length === 0) return "No messages yet";
+    const lastMsg = chat.messages[chat.messages.length - 1];
+    return lastMsg.content;
+  };
+
+  const getUnreadCount = (chat: any) => {
+    if (!currentUser) return 0;
+    return chat.messages.filter((msg: any) => 
+      msg.sender._id !== currentUser.id && !msg.read
+    ).length;
+  };
+
+  const formatTime = (date: string) => {
+    const d = new Date(date);
+    const now = new Date();
+    const diffMs = now.getTime() - d.getTime();
+    const diffMins = Math.floor(diffMs / 60000);
+    const diffHours = Math.floor(diffMs / 3600000);
+    const diffDays = Math.floor(diffMs / 86400000);
+
+    if (diffMins < 1) return "Just now";
+    if (diffMins < 60) return `${diffMins}m ago`;
+    if (diffHours < 24) return `${diffHours}h ago`;
+    if (diffDays < 7) return `${diffDays}d ago`;
+    return d.toLocaleDateString();
+  };
+
+  if (loading) {
+    return (
+      <div className="min-h-screen bg-background">
+        <Navbar />
+        <div className="pt-24 pb-16 px-4 flex items-center justify-center">
+          <div className="text-center">
+            <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary mx-auto mb-4"></div>
+            <p className="text-muted-foreground">Loading chats...</p>
+          </div>
+        </div>
+        <Footer />
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen bg-background">
       <Navbar />
-
-      <div className="pt-24 pb-4 px-4 h-screen flex flex-col">
-        <div className="container mx-auto max-w-4xl flex-1 flex flex-col">
-          <div className="mb-4">
-            <Link
-              to="/explore"
-              className="inline-flex items-center gap-2 text-sm text-muted-foreground hover:text-foreground transition-colors"
-            >
-              <ArrowLeft size={16} />
-              Back to listings
-            </Link>
+      
+      <div className="pt-24 pb-16 px-4">
+        <div className="container mx-auto max-w-4xl">
+          <div className="mb-8">
+            <h1 className="text-3xl font-bold mb-2">Messages</h1>
+            <p className="text-muted-foreground">
+              Conversations about your bicycles
+            </p>
           </div>
 
-          <Card className="flex-1 flex flex-col shadow-medium border-border/50 overflow-hidden">
-            {/* Chat Header */}
-            <div className="p-4 border-b border-border bg-muted/30">
-              <div className="flex items-center gap-3">
-                <div className="w-10 h-10 rounded-full bg-gradient-primary flex items-center justify-center text-white font-semibold">
-                  R
-                </div>
-                <div>
-                  <h3 className="font-semibold">Rahul S.</h3>
-                  <p className="text-sm text-muted-foreground">Mountain Bike - Trek X5</p>
-                </div>
+          {chats.length === 0 ? (
+            <Card className="p-12">
+              <div className="text-center text-muted-foreground">
+                <MessageCircle className="w-16 h-16 mx-auto mb-4 opacity-50" />
+                <h3 className="text-lg font-semibold mb-2">No messages yet</h3>
+                <p className="text-sm">
+                  Start a conversation by contacting a seller or wait for buyers to reach out.
+                </p>
               </div>
-            </div>
+            </Card>
+          ) : (
+            <div className="space-y-3">
+              {chats.map((chat) => {
+                const otherUser = getOtherUser(chat);
+                const lastMessage = getLastMessage(chat);
+                const unreadCount = getUnreadCount(chat);
 
-            {/* Messages */}
-            <div className="flex-1 overflow-y-auto p-4 space-y-4">
-              {messages.map((msg) => (
-                <div
-                  key={msg.id}
-                  className={`flex ${msg.sender === "seller" ? "justify-end" : "justify-start"}`}
-                >
-                  <div
-                    className={`max-w-[70%] rounded-2xl px-4 py-2 ${
-                      msg.sender === "seller"
-                        ? "bg-gradient-primary text-white"
-                        : "bg-muted text-foreground"
-                    }`}
+                return (
+                  <Card
+                    key={chat._id}
+                    className="p-4 cursor-pointer hover:bg-muted/50 transition-colors"
+                    onClick={() => navigate(`/chat/${chat._id}`)}
                   >
-                    <p className="text-sm">{msg.text}</p>
-                    <p
-                      className={`text-xs mt-1 ${
-                        msg.sender === "seller" ? "text-white/70" : "text-muted-foreground"
-                      }`}
-                    >
-                      {msg.timestamp}
-                    </p>
-                  </div>
-                </div>
-              ))}
-            </div>
+                    <div className="flex items-start gap-4">
+                      <Avatar className="w-12 h-12">
+                        <AvatarFallback>
+                          {otherUser.name?.charAt(0).toUpperCase()}
+                        </AvatarFallback>
+                      </Avatar>
 
-            {/* Input */}
-            <div className="p-4 border-t border-border bg-muted/30">
-              <div className="flex gap-2">
-                <Button variant="outline" size="icon" className="rounded-full shrink-0">
-                  <Image className="w-5 h-5" />
-                </Button>
-                <Input
-                  placeholder="Type a message..."
-                  value={message}
-                  onChange={(e) => setMessage(e.target.value)}
-                  onKeyPress={(e) => e.key === "Enter" && handleSend()}
-                  className="rounded-full"
-                />
-                <Button
-                  onClick={handleSend}
-                  size="icon"
-                  className="rounded-full bg-gradient-primary border-0 shrink-0"
-                >
-                  <Send className="w-5 h-5" />
-                </Button>
-              </div>
+                      <div className="flex-1 min-w-0">
+                        <div className="flex items-start justify-between gap-2 mb-1">
+                          <div className="flex-1 min-w-0">
+                            <h3 className="font-semibold text-sm truncate">
+                              {otherUser.name}
+                            </h3>
+                            <p className="text-xs text-muted-foreground truncate">
+                              {otherUser.email}
+                            </p>
+                          </div>
+                          <div className="flex items-center gap-2">
+                            <span className="text-xs text-muted-foreground whitespace-nowrap">
+                              {formatTime(chat.lastMessage)}
+                            </span>
+                            {unreadCount > 0 && (
+                              <span className="bg-red-500 text-white text-xs rounded-full h-5 w-5 flex items-center justify-center">
+                                {unreadCount > 9 ? '9+' : unreadCount}
+                              </span>
+                            )}
+                          </div>
+                        </div>
+
+                        <div className="flex items-center gap-2 mb-2">
+                          <Package className="w-4 h-4 text-muted-foreground" />
+                          <span className="text-sm text-muted-foreground truncate">
+                            {chat.bicycle.title}
+                          </span>
+                          <span className="text-sm font-semibold text-primary">
+                            ₹{chat.bicycle.price?.toLocaleString()}
+                          </span>
+                        </div>
+
+                        <p className={`text-sm truncate ${unreadCount > 0 ? 'font-semibold' : 'text-muted-foreground'}`}>
+                          {lastMessage}
+                        </p>
+                      </div>
+
+                      {chat.bicycle.images?.[0] && (
+                        <img
+                          src={chat.bicycle.images[0]}
+                          alt={chat.bicycle.title}
+                          className="w-16 h-16 rounded-lg object-cover"
+                        />
+                      )}
+                    </div>
+                  </Card>
+                );
+              })}
             </div>
-          </Card>
+          )}
         </div>
       </div>
+
+      <Footer />
     </div>
   );
 };

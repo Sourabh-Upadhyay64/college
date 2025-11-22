@@ -1,19 +1,27 @@
-import { Resend } from 'resend';
+import * as brevo from '@getbrevo/brevo';
 
-const resend = new Resend(process.env.RESEND_API_KEY || 'demo');
+// Initialize Brevo API client
+let apiInstance = null;
+const getBrevoInstance = () => {
+  if (!apiInstance && process.env.BREVO_API_KEY && process.env.BREVO_API_KEY !== 'demo') {
+    apiInstance = new brevo.TransactionalEmailsApi();
+    apiInstance.setApiKey(brevo.TransactionalEmailsApiApiKeys.apiKey, process.env.BREVO_API_KEY);
+  }
+  return apiInstance;
+};
 
 // Generate 6-digit OTP
 export const generateOTP = () => {
   return Math.floor(100000 + Math.random() * 900000).toString();
 };
 
-// Send OTP email using Resend
+// Send OTP email using Brevo
 export const sendOTPEmail = async (email, otp, name = 'User') => {
   try {
     // For demo/testing without API key, just log the OTP
-    if (!process.env.RESEND_API_KEY || process.env.RESEND_API_KEY === 'demo' || process.env.RESEND_API_KEY === '') {
+    if (!process.env.BREVO_API_KEY || process.env.BREVO_API_KEY === 'demo' || process.env.BREVO_API_KEY === '') {
       console.log('='.repeat(60));
-      console.log('📧 EMAIL SIMULATION MODE (Set RESEND_API_KEY for real emails)');
+      console.log('📧 EMAIL SIMULATION MODE (Set BREVO_API_KEY for real emails)');
       console.log('='.repeat(60));
       console.log(`To: ${email}`);
       console.log(`Name: ${name}`);
@@ -23,11 +31,16 @@ export const sendOTPEmail = async (email, otp, name = 'User') => {
       return { success: true, simulated: true };
     }
 
-    const { data, error } = await resend.emails.send({
-      from: 'Bicycle Marketplace <onboarding@resend.dev>',
-      to: [email],
-      subject: 'Email Verification - OTP',
-      html: `
+    const apiInstance = getBrevoInstance();
+    if (!apiInstance) {
+      throw new Error('Brevo instance could not be initialized');
+    }
+
+    const sendSmtpEmail = new brevo.SendSmtpEmail();
+    sendSmtpEmail.sender = { name: 'Bicycle Marketplace', email: process.env.BREVO_SENDER_EMAIL || 'noreply@example.com' };
+    sendSmtpEmail.to = [{ email: email, name: name }];
+    sendSmtpEmail.subject = 'Email Verification - OTP';
+    sendSmtpEmail.htmlContent = `
         <!DOCTYPE html>
         <html>
         <head>
@@ -74,19 +87,14 @@ export const sendOTPEmail = async (email, otp, name = 'User') => {
           </div>
         </body>
         </html>
-      `
-    });
+      `;
 
-    if (error) {
-      console.error('Resend error:', error);
-      throw new Error(error.message || 'Failed to send email via Resend');
-    }
-
-    console.log('OTP Email sent via Resend to:', email);
-    return { success: true, messageId: data.id };
+    const result = await apiInstance.sendTransacEmail(sendSmtpEmail);
+    console.log('OTP Email sent via Brevo to:', email);
+    return { success: true, messageId: result.messageId };
   } catch (error) {
-    console.error('Error sending OTP email:', error.message);
-    throw new Error('Failed to send OTP email: ' + error.message);
+    console.error('Error sending OTP email:', error.message || error);
+    throw new Error('Failed to send OTP email: ' + (error.message || 'Unknown error'));
   }
 };
 
@@ -94,16 +102,22 @@ export const sendOTPEmail = async (email, otp, name = 'User') => {
 export const sendWelcomeEmail = async (email, name) => {
   try {
     // Skip if in demo mode or no API key
-    if (!process.env.RESEND_API_KEY || process.env.RESEND_API_KEY === 'demo' || process.env.RESEND_API_KEY === '') {
+    if (!process.env.BREVO_API_KEY || process.env.BREVO_API_KEY === 'demo' || process.env.BREVO_API_KEY === '') {
       console.log(`📧 Welcome email simulated for: ${email}`);
       return;
     }
 
-    const { error } = await resend.emails.send({
-      from: 'Bicycle Marketplace <onboarding@resend.dev>',
-      to: [email],
-      subject: 'Welcome to Bicycle Marketplace! 🎉',
-      html: `
+    const apiInstance = getBrevoInstance();
+    if (!apiInstance) {
+      console.log('Brevo instance not available, skipping welcome email');
+      return;
+    }
+
+    const sendSmtpEmail = new brevo.SendSmtpEmail();
+    sendSmtpEmail.sender = { name: 'Bicycle Marketplace', email: process.env.BREVO_SENDER_EMAIL || 'noreply@example.com' };
+    sendSmtpEmail.to = [{ email: email, name: name }];
+    sendSmtpEmail.subject = 'Welcome to Bicycle Marketplace! 🎉';
+    sendSmtpEmail.htmlContent = `
         <!DOCTYPE html>
         <html>
         <head>
@@ -155,12 +169,10 @@ export const sendWelcomeEmail = async (email, name) => {
           </div>
         </body>
         </html>
-      `
-    });
+      `;
 
-    if (!error) {
-      console.log('Welcome email sent via Resend to:', email);
-    }
+    await apiInstance.sendTransacEmail(sendSmtpEmail);
+    console.log('Welcome email sent via Brevo to:', email);
   } catch (error) {
     console.error('Error sending welcome email:', error);
     // Don't throw error as this is not critical

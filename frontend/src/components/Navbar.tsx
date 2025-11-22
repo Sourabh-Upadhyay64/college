@@ -8,13 +8,14 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { Menu, X, Bike, User, LogOut, Settings, Package } from "lucide-react";
+import { Menu, X, Bike, User, LogOut, Settings, Package, MessageCircle } from "lucide-react";
 import { useState, useEffect } from "react";
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [userName, setUserName] = useState("");
+  const [unreadCount, setUnreadCount] = useState(0);
   const location = useLocation();
   const navigate = useNavigate();
 
@@ -28,6 +29,8 @@ const Navbar = () => {
       try {
         const userData = JSON.parse(user);
         setUserName(userData.name || "User");
+        // Fetch unread message count
+        fetchUnreadCount(token);
       } catch (error) {
         console.error("Error parsing user data:", error);
       }
@@ -35,6 +38,32 @@ const Navbar = () => {
       setIsLoggedIn(false);
     }
   }, [location]);
+
+  const fetchUnreadCount = async (token: string) => {
+    try {
+      const response = await fetch('http://localhost:5000/api/chats', {
+        headers: {
+          'Authorization': `Bearer ${token}`
+        }
+      });
+      const data = await response.json();
+      if (data.success) {
+        // Count unread messages
+        const currentUserId = JSON.parse(localStorage.getItem("user") || "{}").id;
+        let count = 0;
+        data.data.chats.forEach((chat: any) => {
+          chat.messages.forEach((msg: any) => {
+            if (msg.sender._id !== currentUserId && !msg.read) {
+              count++;
+            }
+          });
+        });
+        setUnreadCount(count);
+      }
+    } catch (error) {
+      console.error("Error fetching unread count:", error);
+    }
+  };
 
   const handleLogout = () => {
     localStorage.removeItem("token");
@@ -47,8 +76,7 @@ const Navbar = () => {
     { name: "Home", path: "/" },
     { name: "About", path: "/about" },
     { name: "Services", path: "/services" },
-    { name: "Clients", path: "/clients" },
-    { name: "Blog", path: "/blog" },
+    { name: "FAQ", path: "/faq" },
   ];
 
   const isActive = (path: string) => location.pathname === path;
@@ -80,6 +108,16 @@ const Navbar = () => {
           <div className="hidden md:flex items-center gap-3">
             {isLoggedIn ? (
               <>
+                <Link to="/chat">
+                  <Button variant="ghost" className="rounded-full relative">
+                    <MessageCircle className="h-5 w-5" />
+                    {unreadCount > 0 && (
+                      <span className="absolute -top-1 -right-1 bg-red-500 text-white text-xs rounded-full h-5 w-5 flex items-center justify-center">
+                        {unreadCount > 9 ? '9+' : unreadCount}
+                      </span>
+                    )}
+                  </Button>
+                </Link>
                 <Link to="/sell">
                   <Button variant="outline" className="rounded-full">
                     Sell Bicycle
@@ -164,6 +202,17 @@ const Navbar = () => {
             <div className="pt-3 space-y-2">
               {isLoggedIn ? (
                 <>
+                  <Link to="/chat" onClick={() => setIsOpen(false)}>
+                    <Button variant="outline" className="w-full rounded-full relative">
+                      <MessageCircle className="mr-2 h-4 w-4" />
+                      Messages
+                      {unreadCount > 0 && (
+                        <span className="ml-auto bg-red-500 text-white text-xs rounded-full h-5 w-5 flex items-center justify-center">
+                          {unreadCount > 9 ? '9+' : unreadCount}
+                        </span>
+                      )}
+                    </Button>
+                  </Link>
                   <Link to="/profile" onClick={() => setIsOpen(false)}>
                     <Button variant="outline" className="w-full rounded-full">
                       <User className="mr-2 h-4 w-4" />

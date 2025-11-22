@@ -15,6 +15,7 @@ import BicycleDetails from "./pages/BicycleDetails";
 import Sell from "./pages/Sell";
 import MyListings from "./pages/MyListings";
 import Chat from "./pages/Chat";
+import ChatPage from "./pages/ChatPage";
 import Profile from "./pages/Profile";
 import FAQ from "./pages/FAQ";
 import NotFound from "./pages/NotFound";
@@ -40,6 +41,7 @@ const App = () => (
           <Route path="/sell" element={<Sell />} />
           <Route path="/my-listings" element={<MyListings />} />
           <Route path="/chat" element={<Chat />} />
+          <Route path="/chat/:id" element={<ChatPage />} />
           <Route path="/profile" element={<Profile />} />
           <Route path="/faq" element={<FAQ />} />
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
