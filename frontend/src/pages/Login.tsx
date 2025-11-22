@@ -1,19 +1,79 @@
 import { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { ArrowLeft, Bike } from "lucide-react";
+import { ArrowLeft, Bike, Loader2 } from "lucide-react";
+import { useToast } from "@/hooks/use-toast";
 
 const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
+  const { toast } = useToast();
+  const navigate = useNavigate();
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const API_URL = "http://localhost:5000/api/auth";
+
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    // Handle login logic
-    console.log("Login:", { email, password });
+
+    if (!email || !password) {
+      toast({
+        title: "Error",
+        description: "Please fill in all fields",
+        variant: "destructive",
+      });
+      return;
+    }
+
+    setIsLoading(true);
+
+    try {
+      const response = await fetch(`${API_URL}/login`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          email,
+          password,
+        }),
+      });
+
+      const data = await response.json();
+
+      if (response.ok && data.success) {
+        // Store token and user data
+        localStorage.setItem("token", data.data.token);
+        localStorage.setItem("user", JSON.stringify(data.data.user));
+        
+        toast({
+          title: "Welcome back! 🎉",
+          description: "You have successfully logged in",
+        });
+        
+        // Redirect to explore page
+        setTimeout(() => {
+          navigate("/explore");
+        }, 1000);
+      } else {
+        toast({
+          title: "Login Failed",
+          description: data.message || "Invalid email or password",
+          variant: "destructive",
+        });
+      }
+    } catch (error) {
+      toast({
+        title: "Error",
+        description: "Failed to connect to server. Please try again.",
+        variant: "destructive",
+      });
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   return (
@@ -44,14 +104,15 @@ const Login = () => {
                 <Input
                   id="email"
                   type="email"
-                  placeholder="name@college.edu"
+                  placeholder="name@birlainstitute.co.in"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   required
+                  disabled={isLoading}
                   className="rounded-lg"
                 />
                 <p className="text-xs text-muted-foreground">
-                  We verify your institute email domain
+                  Only verified @birlainstitute.co.in emails can login
                 </p>
               </div>
 
@@ -60,15 +121,28 @@ const Login = () => {
                 <Input
                   id="password"
                   type="password"
+                  placeholder="Enter your password"
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                   required
+                  disabled={isLoading}
                   className="rounded-lg"
                 />
               </div>
 
-              <Button type="submit" className="w-full rounded-full bg-gradient-primary border-0">
-                Sign In
+              <Button 
+                type="submit" 
+                className="w-full rounded-full bg-gradient-primary border-0"
+                disabled={isLoading}
+              >
+                {isLoading ? (
+                  <>
+                    <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                    Signing In...
+                  </>
+                ) : (
+                  "Sign In"
+                )}
               </Button>
 
               <div className="text-center text-sm text-muted-foreground">

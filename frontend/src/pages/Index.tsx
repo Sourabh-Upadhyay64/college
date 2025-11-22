@@ -9,8 +9,8 @@ const Index = () => {
   const features = [
     {
       icon: Shield,
-      title: "Verified Students Only",
-      description: "College email verification ensures a safe, spam-free community",
+      title: "Verified Members Only",
+      description: "Email verification ensures a safe, spam-free community",
     },
     {
       icon: Zap,
@@ -19,8 +19,8 @@ const Index = () => {
     },
     {
       icon: Users,
-      title: "Campus Community",
-      description: "Buy and sell within your trusted campus network",
+      title: "Trusted Community",
+      description: "Buy and sell within your verified network",
     },
   ];
 
@@ -28,7 +28,7 @@ const Index = () => {
     {
       step: "1",
       title: "Sign Up",
-      description: "Create account with your college email",
+      description: "Create account with your verified email",
     },
     {
       step: "2",
@@ -58,12 +58,12 @@ const Index = () => {
             Buy & Sell Bicycles
             <br />
             <span className="bg-gradient-primary bg-clip-text text-transparent">
-              Inside Your Campus
+              Within Your Community
             </span>
           </h1>
 
           <p className="text-lg md:text-xl text-muted-foreground max-w-2xl mx-auto">
-            Verified students only · Zero spam · Sustainable campus living
+            Verified members only · Safe transactions · Sustainable living
           </p>
 
           <div className="flex flex-col sm:flex-row gap-4 justify-center items-center pt-4">
@@ -129,7 +129,7 @@ const Index = () => {
         <div className="container mx-auto text-center space-y-6">
           <h2 className="text-3xl md:text-4xl font-bold">Ready to Get Started?</h2>
           <p className="text-lg opacity-90 max-w-2xl mx-auto">
-            Join hundreds of students already buying and selling bicycles on campus
+            Join our community of verified members buying and selling bicycles
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center pt-4">
             <Link to="/signup">

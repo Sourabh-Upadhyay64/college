@@ -4,9 +4,105 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
-import { User, LogOut, Trash2 } from "lucide-react";
+import { User, LogOut, Trash2, Loader2 } from "lucide-react";
+import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { useToast } from "@/hooks/use-toast";
 
 const Profile = () => {
+  const [loading, setLoading] = useState(true);
+  const [saving, setSaving] = useState(false);
+  const [userData, setUserData] = useState({
+    name: "",
+    email: "",
+    phone: "",
+  });
+  const navigate = useNavigate();
+  const { toast } = useToast();
+  const API_URL = "http://localhost:5000";
+
+  useEffect(() => {
+    fetchUserData();
+  }, []);
+
+  const fetchUserData = async () => {
+    try {
+      const token = localStorage.getItem("token");
+      
+      if (!token) {
+        navigate("/login");
+        return;
+      }
+
+      const response = await fetch(`${API_URL}/api/auth/me`, {
+        headers: {
+          "Authorization": `Bearer ${token}`,
+        },
+      });
+
+      const data = await response.json();
+
+      if (data.success) {
+        setUserData({
+          name: data.data.user.name || "",
+          email: data.data.user.email || "",
+          phone: data.data.user.phone || "",
+        });
+      } else {
+        throw new Error(data.message);
+      }
+    } catch (error) {
+      console.error("Error fetching user data:", error);
+      toast({
+        title: "Error",
+        description: "Failed to load profile data",
+        variant: "destructive",
+      });
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleSaveChanges = async () => {
+    setSaving(true);
+    try {
+      // For now, just update localStorage
+      const user = JSON.parse(localStorage.getItem("user") || "{}");
+      user.phone = userData.phone;
+      localStorage.setItem("user", JSON.stringify(user));
+      
+      toast({
+        title: "Success",
+        description: "Profile updated successfully",
+      });
+    } catch (error) {
+      toast({
+        title: "Error",
+        description: "Failed to update profile",
+        variant: "destructive",
+      });
+    } finally {
+      setSaving(false);
+    }
+  };
+
+  const handleLogout = () => {
+    localStorage.removeItem("token");
+    localStorage.removeItem("user");
+    navigate("/");
+  };
+
+  if (loading) {
+    return (
+      <div className="min-h-screen bg-background">
+        <Navbar />
+        <div className="pt-24 pb-16 px-4 flex items-center justify-center">
+          <Loader2 className="w-8 h-8 animate-spin text-primary" />
+        </div>
+        <Footer />
+      </div>
+    );
+  }
   return (
     <div className="min-h-screen bg-background">
       <Navbar />
@@ -35,7 +131,8 @@ const Profile = () => {
                     <Label htmlFor="name">Full Name</Label>
                     <Input
                       id="name"
-                      defaultValue="Rahul Sharma"
+                      value={userData.name}
+                      onChange={(e) => setUserData({ ...userData, name: e.target.value })}
                       className="rounded-lg"
                       readOnly
                     />
@@ -46,7 +143,7 @@ const Profile = () => {
                     <Input
                       id="email"
                       type="email"
-                      defaultValue="rahul@college.edu"
+                      value={userData.email}
                       className="rounded-lg"
                       readOnly
                     />
@@ -60,6 +157,8 @@ const Profile = () => {
                     <Input
                       id="phone"
                       type="tel"
+                      value={userData.phone}
+                      onChange={(e) => setUserData({ ...userData, phone: e.target.value })}
                       placeholder="+91 98765 43210"
                       className="rounded-lg"
                     />
@@ -67,10 +166,25 @@ const Profile = () => {
                 </div>
 
                 <div className="pt-6 space-y-3">
-                  <Button className="w-full rounded-full bg-gradient-primary border-0">
-                    Save Changes
+                  <Button 
+                    onClick={handleSaveChanges}
+                    disabled={saving}
+                    className="w-full rounded-full bg-gradient-primary border-0"
+                  >
+                    {saving ? (
+                      <>
+                        <Loader2 className="w-4 h-4 mr-2 animate-spin" />
+                        Saving...
+                      </>
+                    ) : (
+                      "Save Changes"
+                    )}
                   </Button>
-                  <Button variant="outline" className="w-full rounded-full">
+                  <Button 
+                    variant="outline" 
+                    onClick={handleLogout}
+                    className="w-full rounded-full"
+                  >
                     <LogOut className="w-4 h-4 mr-2" />
                     Logout
                   </Button>
