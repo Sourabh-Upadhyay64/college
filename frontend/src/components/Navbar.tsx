@@ -10,6 +10,7 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { Menu, X, Bike, User, LogOut, Settings, Package, MessageCircle } from "lucide-react";
 import { useState, useEffect } from "react";
+import { API_URL } from "@/config/api";
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -41,7 +42,7 @@ const Navbar = () => {
 
   const fetchUnreadCount = async (token: string) => {
     try {
-      const response = await fetch('http://localhost:5000/api/chats', {
+      const response = await fetch(`${API_URL}/api/chats`, {
         headers: {
           'Authorization': `Bearer ${token}`
         }

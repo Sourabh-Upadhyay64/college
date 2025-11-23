@@ -7,6 +7,7 @@ import { Card } from "@/components/ui/card";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { Send, ArrowLeft, Package } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
+import { API_URL } from "@/config/api";
 
 const Chat = () => {
   const { id } = useParams();
@@ -48,7 +49,7 @@ const Chat = () => {
     const token = localStorage.getItem('token');
     
     try {
-      const response = await fetch(`http://localhost:5000/api/chats/${id}`, {
+      const response = await fetch(`${API_URL}/api/chats/${id}`, {
         headers: {
           'Authorization': `Bearer ${token}`
         }
@@ -86,7 +87,7 @@ const Chat = () => {
     setSending(true);
 
     try {
-      const response = await fetch(`http://localhost:5000/api/chats/${id}/messages`, {
+      const response = await fetch(`${API_URL}/api/chats/${id}/messages`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

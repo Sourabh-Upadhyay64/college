@@ -30,7 +30,8 @@ const Explore = () => {
   });
   const { toast } = useToast();
 
-  const API_URL = "http://localhost:5000/api/bicycles";
+  const API_BASE = import.meta.env.VITE_API_URL || 'http://localhost:5000';
+  const API_ENDPOINT = `${API_BASE}/api/bicycles`;
 
   useEffect(() => {
     fetchBicycles();

@@ -6,6 +6,7 @@ import { Card } from "@/components/ui/card";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { MessageCircle, Package } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
+import { API_URL } from "@/config/api";
 
 const Chat = () => {
   const navigate = useNavigate();
@@ -34,7 +35,7 @@ const Chat = () => {
     const token = localStorage.getItem('token');
     
     try {
-      const response = await fetch('http://localhost:5000/api/chats', {
+      const response = await fetch(`${API_URL}/api/chats`, {
         headers: {
           'Authorization': `Bearer ${token}`
         }

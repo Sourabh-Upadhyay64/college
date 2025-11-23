@@ -20,11 +20,12 @@ const app = express();
 app.use(express.json({ limit: '50mb' })); // Increase limit for base64 images
 app.use(express.urlencoded({ extended: true, limit: '50mb' }));
 
-// CORS configuration - Allow both development ports
+// CORS configuration - Allow development and production URLs
 app.use(cors({
   origin: [
     'http://localhost:5173',
     'http://localhost:8080',
+    'https://college-inky.vercel.app',
     process.env.FRONTEND_URL
   ].filter(Boolean),
   credentials: true

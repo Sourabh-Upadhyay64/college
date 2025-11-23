@@ -7,6 +7,7 @@ import { Badge } from "@/components/ui/badge";
 import { Card } from "@/components/ui/card";
 import { ArrowLeft, MessageCircle, Phone, Mail, User } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
+import { API_URL } from "@/config/api";
 
 const BicycleDetails = () => {
   const { id } = useParams();
@@ -30,7 +31,7 @@ const BicycleDetails = () => {
 
   const fetchBicycleDetails = async () => {
     try {
-      const response = await fetch(`http://localhost:5000/api/bicycles/${id}`);
+      const response = await fetch(`${API_URL}/api/bicycles/${id}`);
       const data = await response.json();
 
       if (data.success) {
@@ -68,7 +69,7 @@ const BicycleDetails = () => {
     }
 
     try {
-      const response = await fetch('http://localhost:5000/api/chats', {
+      const response = await fetch(`${API_URL}/api/chats`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

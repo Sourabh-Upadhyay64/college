@@ -27,7 +27,8 @@ const Signup = () => {
   const { toast } = useToast();
   const navigate = useNavigate();
 
-  const API_URL = "http://localhost:5000/api/auth";
+  const API_BASE = import.meta.env.VITE_API_URL || 'http://localhost:5000';
+  const API_URL = `${API_BASE}/api/auth`;
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
