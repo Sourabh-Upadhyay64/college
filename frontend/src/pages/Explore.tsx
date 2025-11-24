@@ -48,7 +48,7 @@ const Explore = () => {
       params.append("maxPrice", priceRange[1].toString());
       params.append("sort", filters.sort);
 
-      const response = await fetch(`${API_URL}?${params}`);
+      const response = await fetch(`${API_ENDPOINT}?${params}`);
       const data = await response.json();
 
       if (response.ok && data.success) {
