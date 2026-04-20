@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import { Mail, Phone, MapPin, Bike } from "lucide-react";
+import { Mail, Phone, MapPin, Package } from "lucide-react";
 
 const Footer = () => {
   return (
@@ -8,11 +8,12 @@ const Footer = () => {
         <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
           <div className="space-y-4">
             <div className="flex items-center gap-2">
-              <Bike className="h-8 w-8" />
-              <span className="text-xl font-bold">CampusCycles</span>
+              <Package className="h-8 w-8" />
+              <span className="text-xl font-bold">CampusBazaar</span>
             </div>
             <p className="text-sm opacity-90">
-              Campus bicycle marketplace for verified students. Sustainable, secure, spam-free.
+              Campus marketplace for verified students. Buy and sell products
+              securely and easily.
             </p>
           </div>
 
@@ -20,22 +21,34 @@ const Footer = () => {
             <h3 className="font-semibold mb-4">Quick Links</h3>
             <ul className="space-y-2 text-sm">
               <li>
-                <Link to="/about" className="opacity-90 hover:opacity-100 transition-opacity">
+                <Link
+                  to="/about"
+                  className="opacity-90 hover:opacity-100 transition-opacity"
+                >
                   About Us
                 </Link>
               </li>
               <li>
-                <Link to="/services" className="opacity-90 hover:opacity-100 transition-opacity">
+                <Link
+                  to="/services"
+                  className="opacity-90 hover:opacity-100 transition-opacity"
+                >
                   Services
                 </Link>
               </li>
               <li>
-                <Link to="/faq" className="opacity-90 hover:opacity-100 transition-opacity">
+                <Link
+                  to="/faq"
+                  className="opacity-90 hover:opacity-100 transition-opacity"
+                >
                   FAQ
                 </Link>
               </li>
               <li>
-                <Link to="/blog" className="opacity-90 hover:opacity-100 transition-opacity">
+                <Link
+                  to="/blog"
+                  className="opacity-90 hover:opacity-100 transition-opacity"
+                >
                   Blog
                 </Link>
               </li>
@@ -46,22 +59,34 @@ const Footer = () => {
             <h3 className="font-semibold mb-4">For Users</h3>
             <ul className="space-y-2 text-sm">
               <li>
-                <Link to="/explore" className="opacity-90 hover:opacity-100 transition-opacity">
-                  Browse Bicycles
+                <Link
+                  to="/explore"
+                  className="opacity-90 hover:opacity-100 transition-opacity"
+                >
+                  Browse Products
                 </Link>
               </li>
               <li>
-                <Link to="/sell" className="opacity-90 hover:opacity-100 transition-opacity">
-                  Sell Your Cycle
+                <Link
+                  to="/sell"
+                  className="opacity-90 hover:opacity-100 transition-opacity"
+                >
+                  Sell Your Product
                 </Link>
               </li>
               <li>
-                <Link to="/my-listings" className="opacity-90 hover:opacity-100 transition-opacity">
+                <Link
+                  to="/my-listings"
+                  className="opacity-90 hover:opacity-100 transition-opacity"
+                >
                   My Listings
                 </Link>
               </li>
               <li>
-                <Link to="/profile" className="opacity-90 hover:opacity-100 transition-opacity">
+                <Link
+                  to="/profile"
+                  className="opacity-90 hover:opacity-100 transition-opacity"
+                >
                   Profile
                 </Link>
               </li>
@@ -77,7 +102,7 @@ const Footer = () => {
               </li>
               <li className="flex items-center gap-2 opacity-90">
                 <Phone size={16} />
-                <span>+1 234 567 890</span>
+                <span>90856-72345</span>
               </li>
               <li className="flex items-center gap-2 opacity-90">
                 <MapPin size={16} />
@@ -88,7 +113,7 @@ const Footer = () => {
         </div>
 
         <div className="border-t border-primary-foreground/20 mt-8 pt-8 text-center text-sm opacity-75">
-          <p>&copy; 2025 CampusCycles. All rights reserved.</p>
+          <p>&copy; 2025 CampusBazaar. All rights reserved.</p>
         </div>
       </div>
     </footer>

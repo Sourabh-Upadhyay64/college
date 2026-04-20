@@ -11,17 +11,19 @@ const MyListings = () => {
   const listings = [
     {
       id: "1",
-      image: "https://images.unsplash.com/photo-1485965120184-e220f721d03e?w=400",
-      title: "Mountain Bike - Trek X5",
-      price: 15000,
+      image:
+        "https://images.unsplash.com/photo-1586343797367-c8942268df67?q=80&w=1828&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+      title: "Wireless Headphones - Sony",
+      price: 4000,
       status: "Active",
       condition: "Good",
     },
     {
       id: "2",
-      image: "https://images.unsplash.com/photo-1532298229144-0ec0c57515c7?w=400",
-      title: "City Cruiser - Hero Urban",
-      price: 8000,
+      image:
+        "https://images.unsplash.com/photo-1679309981674-cef0e23a7864?q=80&w=1762&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+      title: "Study Table - Wooden",
+      price: 5000,
       status: "Sold",
       condition: "New",
     },
@@ -35,11 +37,17 @@ const MyListings = () => {
         <div className="container mx-auto max-w-4xl">
           <div className="mb-8 animate-fade-in-up flex justify-between items-center">
             <div>
-              <h1 className="text-3xl md:text-4xl font-bold mb-2">My Listings</h1>
-              <p className="text-muted-foreground">Manage your bicycle listings</p>
+              <h1 className="text-3xl md:text-4xl font-bold mb-2">
+                My Listings
+              </h1>
+              <p className="text-muted-foreground">
+                Manage your product listings
+              </p>
             </div>
             <Link to="/sell">
-              <Button className="rounded-full bg-gradient-primary border-0">Add New Listing</Button>
+              <Button className="rounded-full bg-gradient-primary border-0">
+                Add New Product
+              </Button>
             </Link>
           </div>
 
@@ -64,7 +72,9 @@ const MyListings = () => {
                       <div className="flex flex-col md:flex-row md:items-start md:justify-between gap-4">
                         <div className="flex-1">
                           <div className="flex items-start gap-3 mb-2">
-                            <h3 className="text-xl font-semibold">{listing.title}</h3>
+                            <h3 className="text-xl font-semibold">
+                              {listing.title}
+                            </h3>
                             <Badge
                               className={
                                 listing.status === "Active"
@@ -84,7 +94,11 @@ const MyListings = () => {
                         </div>
 
                         <div className="flex md:flex-col gap-2">
-                          <Button variant="outline" size="sm" className="rounded-full flex-1 md:flex-none">
+                          <Button
+                            variant="outline"
+                            size="sm"
+                            className="rounded-full flex-1 md:flex-none"
+                          >
                             <Edit className="w-4 h-4 md:mr-2" />
                             <span className="hidden md:inline">Edit</span>
                           </Button>
@@ -97,9 +111,15 @@ const MyListings = () => {
                             <span className="hidden md:inline">Delete</span>
                           </Button>
                           {listing.status === "Active" && (
-                            <Button variant="default" size="sm" className="rounded-full flex-1 md:flex-none">
+                            <Button
+                              variant="default"
+                              size="sm"
+                              className="rounded-full flex-1 md:flex-none"
+                            >
                               <CheckCircle className="w-4 h-4 md:mr-2" />
-                              <span className="hidden md:inline">Mark Sold</span>
+                              <span className="hidden md:inline">
+                                Mark Sold
+                              </span>
                             </Button>
                           )}
                         </div>

@@ -8,7 +8,7 @@ const About = () => {
       icon: Target,
       title: "Our Mission",
       description:
-        "To create a sustainable, student-friendly marketplace that makes bicycle ownership accessible and eco-friendly campus transportation the norm.",
+        "To create a student-friendly marketplace that makes buying and selling products easy, affordable, and accessible within the campus community.",
     },
     {
       icon: Users,
@@ -20,7 +20,7 @@ const About = () => {
       icon: Leaf,
       title: "Sustainability",
       description:
-        "Promoting bicycle reuse reduces waste and carbon footprint while encouraging healthy, eco-conscious transportation choices.",
+        "Promoting product reuse reduces waste and encourages eco-conscious consumption among students.",
     },
     {
       icon: Shield,
@@ -38,11 +38,15 @@ const About = () => {
         <div className="container mx-auto max-w-4xl">
           <div className="text-center mb-16 animate-fade-in-up">
             <h1 className="text-4xl md:text-5xl font-bold mb-6">
-              About <span className="bg-gradient-primary bg-clip-text text-transparent">Dev-Evelopers</span>
+              About{" "}
+              <span className="bg-gradient-primary bg-clip-text text-transparent">
+                Dev-Evelopers
+              </span>
             </h1>
             <p className="text-lg text-muted-foreground max-w-2xl mx-auto leading-relaxed">
-              We're on a mission to revolutionize campus transportation by making bicycle ownership
-              easy, affordable, and sustainable through our trusted student marketplace.
+              We're on a mission to simplify campus commerce by creating a
+              trusted marketplace where students can buy and sell products
+              affordably, and safely.
             </p>
           </div>
 
@@ -57,26 +61,34 @@ const About = () => {
                   <value.icon className="w-7 h-7 text-white" />
                 </div>
                 <h3 className="text-xl font-semibold mb-3">{value.title}</h3>
-                <p className="text-muted-foreground leading-relaxed">{value.description}</p>
+                <p className="text-muted-foreground leading-relaxed">
+                  {value.description}
+                </p>
               </div>
             ))}
           </div>
 
           <div className="bg-gradient-primary text-white rounded-3xl p-8 md:p-12 text-center animate-fade-in-up">
-            <h2 className="text-2xl md:text-3xl font-bold mb-4">Why We Built This</h2>
+            <h2 className="text-2xl md:text-3xl font-bold mb-4">
+              Why We Built This
+            </h2>
             <p className="text-lg opacity-90 max-w-2xl mx-auto leading-relaxed">
-              As students ourselves, we noticed how difficult it was to buy or sell bicycles on
-              campus. Existing platforms were cluttered with spam, lacked verification, and didn't
-              cater to the student community. So we built a solution—a trusted, campus-only
-              marketplace where verified students can easily connect, trade bicycles, and promote
-              sustainable transportation.
+              As students ourselves, we noticed how difficult it was to buy or
+              sell products on campus. Existing platforms were cluttered with
+              spam, lacked verification, and didn't cater specifically to
+              students. So we built a solution—a trusted, campus-only
+              marketplace where verified students can easily connect and trade
+              products securely.
             </p>
           </div>
 
           <div className="mt-16 text-center">
-            <h2 className="text-3xl font-bold mb-6">Join Our Growing Community</h2>
+            <h2 className="text-3xl font-bold mb-6">
+              Join Our Growing Community
+            </h2>
             <p className="text-muted-foreground mb-8 text-lg">
-              Hundreds of students are already buying and selling bicycles safely on campus
+              Hundreds of students are already buying and selling products
+              safely on campus
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <a href="/signup" className="inline-block">
@@ -86,7 +98,7 @@ const About = () => {
               </a>
               <a href="/explore" className="inline-block">
                 <button className="px-8 py-3 border-2 border-border rounded-full font-medium hover:bg-muted transition-colors">
-                  Browse Bicycles
+                  Browse Products
                 </button>
               </a>
             </div>

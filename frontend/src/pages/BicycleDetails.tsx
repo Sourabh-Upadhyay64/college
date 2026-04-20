@@ -20,7 +20,7 @@ const BicycleDetails = () => {
 
   useEffect(() => {
     // Get current user
-    const userStr = localStorage.getItem('user');
+    const userStr = localStorage.getItem("user");
     if (userStr) {
       setCurrentUser(JSON.parse(userStr));
     }
@@ -39,12 +39,12 @@ const BicycleDetails = () => {
       } else {
         toast({
           title: "Error",
-          description: data.message || "Failed to load bicycle details",
+          description: data.message || "Failed to load Product details",
           variant: "destructive",
         });
       }
     } catch (error) {
-      console.error('Error fetching bicycle:', error);
+      console.error("Error fetching bicycle:", error);
       toast({
         title: "Error",
         description: "Failed to load bicycle details",
@@ -56,26 +56,26 @@ const BicycleDetails = () => {
   };
 
   const handleChatWithSeller = async () => {
-    const token = localStorage.getItem('token');
-    
+    const token = localStorage.getItem("token");
+
     if (!token) {
       toast({
         title: "Login Required",
         description: "Please login to chat with the seller",
         variant: "destructive",
       });
-      navigate('/login');
+      navigate("/login");
       return;
     }
 
     try {
       const response = await fetch(`${API_URL}/api/chats`, {
-        method: 'POST',
+        method: "POST",
         headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${token}`
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
         },
-        body: JSON.stringify({ bicycleId: id })
+        body: JSON.stringify({ bicycleId: id }),
       });
 
       const data = await response.json();
@@ -90,7 +90,7 @@ const BicycleDetails = () => {
         });
       }
     } catch (error) {
-      console.error('Error starting chat:', error);
+      console.error("Error starting chat:", error);
       toast({
         title: "Error",
         description: "Failed to start chat",
@@ -106,7 +106,7 @@ const BicycleDetails = () => {
         <div className="pt-24 pb-16 px-4 flex items-center justify-center">
           <div className="text-center">
             <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary mx-auto mb-4"></div>
-            <p className="text-muted-foreground">Loading bicycle details...</p>
+            <p className="text-muted-foreground">Loading Product details...</p>
           </div>
         </div>
         <Footer />
@@ -120,9 +120,13 @@ const BicycleDetails = () => {
         <Navbar />
         <div className="pt-24 pb-16 px-4 flex items-center justify-center">
           <div className="text-center">
-            <h2 className="text-2xl font-bold mb-2">Bicycle Not Found</h2>
-            <p className="text-muted-foreground mb-4">The bicycle you're looking for doesn't exist.</p>
-            <Button onClick={() => navigate('/explore')}>Back to Explore</Button>
+            <h2 className="text-2xl font-bold mb-2">Product Not Found</h2>
+            <p className="text-muted-foreground mb-4">
+              The Product you're looking for doesn't exist.
+            </p>
+            <Button onClick={() => navigate("/explore")}>
+              Back to Explore
+            </Button>
           </div>
         </div>
         <Footer />
@@ -130,7 +134,8 @@ const BicycleDetails = () => {
     );
   }
 
-  const isOwner = currentUser && bicycle.seller && currentUser.id === bicycle.seller._id;
+  const isOwner =
+    currentUser && bicycle.seller && currentUser.id === bicycle.seller._id;
 
   return (
     <div className="min-h-screen bg-background">
@@ -151,10 +156,17 @@ const BicycleDetails = () => {
             <div className="space-y-4">
               <div className="aspect-[4/3] rounded-2xl overflow-hidden bg-muted shadow-medium">
                 <img
-                  src={bicycle.images[currentImageIndex] || "https://images.unsplash.com/photo-1485965120184-e220f721d03e?w=1200"}
+                  src={
+                    bicycle.images[currentImageIndex] ||
+                    "https://images.unsplash.com/photo-1485965120184-e220f721d03e?w=1200"
+                  }
                   alt={bicycle.title}
                   className="w-full h-full object-cover cursor-pointer"
-                  onClick={() => setCurrentImageIndex((currentImageIndex + 1) % bicycle.images.length)}
+                  onClick={() =>
+                    setCurrentImageIndex(
+                      (currentImageIndex + 1) % bicycle.images.length,
+                    )
+                  }
                 />
               </div>
               {bicycle.images.length > 1 && (
@@ -163,11 +175,17 @@ const BicycleDetails = () => {
                     <div
                       key={index}
                       className={`aspect-square rounded-xl overflow-hidden bg-muted cursor-pointer transition-all ${
-                        currentImageIndex === index ? 'ring-2 ring-primary' : 'hover:opacity-80'
+                        currentImageIndex === index
+                          ? "ring-2 ring-primary"
+                          : "hover:opacity-80"
                       }`}
                       onClick={() => setCurrentImageIndex(index)}
                     >
-                      <img src={img} alt={`View ${index + 1}`} className="w-full h-full object-cover" />
+                      <img
+                        src={img}
+                        alt={`View ${index + 1}`}
+                        className="w-full h-full object-cover"
+                      />
                     </div>
                   ))}
                 </div>
@@ -183,7 +201,9 @@ const BicycleDetails = () => {
                     {bicycle.condition}
                   </Badge>
                 </div>
-                <p className="text-4xl font-bold text-primary">₹{bicycle.price.toLocaleString()}</p>
+                <p className="text-4xl font-bold text-primary">
+                  ₹{bicycle.price.toLocaleString()}
+                </p>
               </div>
 
               <Card className="p-6 space-y-4 border-border/50">
@@ -209,7 +229,9 @@ const BicycleDetails = () => {
 
               <div>
                 <h2 className="font-semibold mb-2">Description</h2>
-                <p className="text-muted-foreground leading-relaxed">{bicycle.description}</p>
+                <p className="text-muted-foreground leading-relaxed">
+                  {bicycle.description}
+                </p>
               </div>
 
               <Card className="p-6 bg-muted/30 border-border/50">
@@ -237,8 +259,8 @@ const BicycleDetails = () => {
 
               {!isOwner && (
                 <div className="space-y-3">
-                  <Button 
-                    className="w-full rounded-full bg-gradient-primary border-0" 
+                  <Button
+                    className="w-full rounded-full bg-gradient-primary border-0"
                     size="lg"
                     onClick={handleChatWithSeller}
                   >

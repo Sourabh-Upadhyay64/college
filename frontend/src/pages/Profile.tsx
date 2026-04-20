@@ -19,7 +19,7 @@ const Profile = () => {
   });
   const navigate = useNavigate();
   const { toast } = useToast();
-  const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000';
+  const API_URL = import.meta.env.VITE_API_URL || "http://localhost:5000";
 
   useEffect(() => {
     fetchUserData();
@@ -28,7 +28,7 @@ const Profile = () => {
   const fetchUserData = async () => {
     try {
       const token = localStorage.getItem("token");
-      
+
       if (!token) {
         navigate("/login");
         return;
@@ -36,7 +36,7 @@ const Profile = () => {
 
       const response = await fetch(`${API_URL}/api/auth/me`, {
         headers: {
-          "Authorization": `Bearer ${token}`,
+          Authorization: `Bearer ${token}`,
         },
       });
 
@@ -70,7 +70,7 @@ const Profile = () => {
       const user = JSON.parse(localStorage.getItem("user") || "{}");
       user.phone = userData.phone;
       localStorage.setItem("user", JSON.stringify(user));
-      
+
       toast({
         title: "Success",
         description: "Profile updated successfully",
@@ -111,7 +111,9 @@ const Profile = () => {
         <div className="container mx-auto max-w-2xl">
           <div className="mb-8 animate-fade-in-up">
             <h1 className="text-3xl md:text-4xl font-bold mb-2">Profile</h1>
-            <p className="text-muted-foreground">Manage your account settings</p>
+            <p className="text-muted-foreground">
+              Manage your account and marketplace preferences
+            </p>
           </div>
 
           <div className="space-y-6 animate-fade-in-up">
@@ -132,7 +134,9 @@ const Profile = () => {
                     <Input
                       id="name"
                       value={userData.name}
-                      onChange={(e) => setUserData({ ...userData, name: e.target.value })}
+                      onChange={(e) =>
+                        setUserData({ ...userData, name: e.target.value })
+                      }
                       className="rounded-lg"
                       readOnly
                     />
@@ -158,7 +162,9 @@ const Profile = () => {
                       id="phone"
                       type="tel"
                       value={userData.phone}
-                      onChange={(e) => setUserData({ ...userData, phone: e.target.value })}
+                      onChange={(e) =>
+                        setUserData({ ...userData, phone: e.target.value })
+                      }
                       placeholder="+91 98765 43210"
                       className="rounded-lg"
                     />
@@ -166,7 +172,7 @@ const Profile = () => {
                 </div>
 
                 <div className="pt-6 space-y-3">
-                  <Button 
+                  <Button
                     onClick={handleSaveChanges}
                     disabled={saving}
                     className="w-full rounded-full bg-gradient-primary border-0"
@@ -180,8 +186,8 @@ const Profile = () => {
                       "Save Changes"
                     )}
                   </Button>
-                  <Button 
-                    variant="outline" 
+                  <Button
+                    variant="outline"
                     onClick={handleLogout}
                     className="w-full rounded-full"
                   >
@@ -194,9 +200,12 @@ const Profile = () => {
 
             <Card className="shadow-medium border-destructive/50">
               <CardContent className="p-6 md:p-8">
-                <h3 className="font-semibold text-lg mb-2 text-destructive">Danger Zone</h3>
+                <h3 className="font-semibold text-lg mb-2 text-destructive">
+                  Danger Zone
+                </h3>
                 <p className="text-sm text-muted-foreground mb-4">
-                  Once you delete your account, there is no going back. Please be certain.
+                  Once you delete your account, there is no going back. Please
+                  be certain.
                 </p>
                 <Button variant="destructive" className="rounded-full">
                   <Trash2 className="w-4 h-4 mr-2" />
