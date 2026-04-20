@@ -16,11 +16,11 @@ const Chat = () => {
   const [currentUser, setCurrentUser] = useState<any>(null);
 
   useEffect(() => {
-    const token = localStorage.getItem('token');
-    const userStr = localStorage.getItem('user');
-    
+    const token = localStorage.getItem("token");
+    const userStr = localStorage.getItem("user");
+
     if (!token) {
-      navigate('/login');
+      navigate("/login");
       return;
     }
 
@@ -32,13 +32,13 @@ const Chat = () => {
   }, []);
 
   const fetchChats = async () => {
-    const token = localStorage.getItem('token');
-    
+    const token = localStorage.getItem("token");
+
     try {
       const response = await fetch(`${API_URL}/api/chats`, {
         headers: {
-          'Authorization': `Bearer ${token}`
-        }
+          Authorization: `Bearer ${token}`,
+        },
       });
 
       const data = await response.json();
@@ -53,7 +53,7 @@ const Chat = () => {
         });
       }
     } catch (error) {
-      console.error('Error fetching chats:', error);
+      console.error("Error fetching chats:", error);
       toast({
         title: "Error",
         description: "Failed to load chats",
@@ -76,8 +76,8 @@ const Chat = () => {
 
   const getUnreadCount = (chat: any) => {
     if (!currentUser) return 0;
-    return chat.messages.filter((msg: any) => 
-      msg.sender._id !== currentUser.id && !msg.read
+    return chat.messages.filter(
+      (msg: any) => msg.sender._id !== currentUser.id && !msg.read,
     ).length;
   };
 
@@ -114,13 +114,13 @@ const Chat = () => {
   return (
     <div className="min-h-screen bg-background">
       <Navbar />
-      
+
       <div className="pt-24 pb-16 px-4">
         <div className="container mx-auto max-w-4xl">
           <div className="mb-8">
             <h1 className="text-3xl font-bold mb-2">Messages</h1>
             <p className="text-muted-foreground">
-              Conversations about your bicycles
+              Conversations about your Products
             </p>
           </div>
 
@@ -130,7 +130,8 @@ const Chat = () => {
                 <MessageCircle className="w-16 h-16 mx-auto mb-4 opacity-50" />
                 <h3 className="text-lg font-semibold mb-2">No messages yet</h3>
                 <p className="text-sm">
-                  Start a conversation by contacting a seller or wait for buyers to reach out.
+                  Start a conversation by contacting a seller or wait for buyers
+                  to reach out.
                 </p>
               </div>
             </Card>
@@ -170,7 +171,7 @@ const Chat = () => {
                             </span>
                             {unreadCount > 0 && (
                               <span className="bg-red-500 text-white text-xs rounded-full h-5 w-5 flex items-center justify-center">
-                                {unreadCount > 9 ? '9+' : unreadCount}
+                                {unreadCount > 9 ? "9+" : unreadCount}
                               </span>
                             )}
                           </div>
@@ -186,7 +187,9 @@ const Chat = () => {
                           </span>
                         </div>
 
-                        <p className={`text-sm truncate ${unreadCount > 0 ? 'font-semibold' : 'text-muted-foreground'}`}>
+                        <p
+                          className={`text-sm truncate ${unreadCount > 0 ? "font-semibold" : "text-muted-foreground"}`}
+                        >
                           {lastMessage}
                         </p>
                       </div>

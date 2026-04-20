@@ -3,7 +3,13 @@ import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import BicycleCard from "@/components/BicycleCard";
 import { Input } from "@/components/ui/input";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 import { Slider } from "@/components/ui/slider";
 import { Label } from "@/components/ui/label";
 import { Search, Loader2 } from "lucide-react";
@@ -30,7 +36,7 @@ const Explore = () => {
   });
   const { toast } = useToast();
 
-  const API_BASE = import.meta.env.VITE_API_URL || 'http://localhost:5000';
+  const API_BASE = import.meta.env.VITE_API_URL || "http://localhost:5000";
   const API_ENDPOINT = `${API_BASE}/api/bicycles`;
 
   useEffect(() => {
@@ -41,7 +47,8 @@ const Explore = () => {
     setIsLoading(true);
     try {
       const params = new URLSearchParams();
-      if (filters.condition !== "all") params.append("condition", filters.condition);
+      if (filters.condition !== "all")
+        params.append("condition", filters.condition);
       if (filters.type !== "all") params.append("type", filters.type);
       if (filters.search) params.append("search", filters.search);
       params.append("minPrice", priceRange[0].toString());
@@ -56,7 +63,7 @@ const Explore = () => {
       } else {
         toast({
           title: "Error",
-          description: "Failed to load bicycles",
+          description: "Failed to load products",
           variant: "destructive",
         });
       }
@@ -79,8 +86,12 @@ const Explore = () => {
       <div className="pt-24 pb-16 px-4">
         <div className="container mx-auto">
           <div className="mb-8 animate-fade-in-up">
-            <h1 className="text-3xl md:text-4xl font-bold mb-2">Browse Bicycles</h1>
-            <p className="text-muted-foreground">Find your perfect ride on campus</p>
+            <h1 className="text-3xl md:text-4xl font-bold mb-2">
+              Browse Products
+            </h1>
+            <p className="text-muted-foreground">
+              Find your best deals on campus
+            </p>
           </div>
 
           <div className="grid grid-cols-1 lg:grid-cols-4 gap-8">
@@ -91,18 +102,25 @@ const Explore = () => {
                   <Label className="mb-3 block">Search</Label>
                   <div className="relative">
                     <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
-                    <Input 
-                      placeholder="Search bicycles..." 
+                    <Input
+                      placeholder="Search products..."
                       className="pl-10 rounded-lg"
                       value={filters.search}
-                      onChange={(e) => setFilters({ ...filters, search: e.target.value })}
+                      onChange={(e) =>
+                        setFilters({ ...filters, search: e.target.value })
+                      }
                     />
                   </div>
                 </div>
 
                 <div>
                   <Label className="mb-3 block">Condition</Label>
-                  <Select value={filters.condition} onValueChange={(value) => setFilters({ ...filters, condition: value })}>
+                  <Select
+                    value={filters.condition}
+                    onValueChange={(value) =>
+                      setFilters({ ...filters, condition: value })
+                    }
+                  >
                     <SelectTrigger className="rounded-lg">
                       <SelectValue placeholder="All conditions" />
                     </SelectTrigger>
@@ -116,25 +134,31 @@ const Explore = () => {
                 </div>
 
                 <div>
-                  <Label className="mb-3 block">Bike Type</Label>
-                  <Select value={filters.type} onValueChange={(value) => setFilters({ ...filters, type: value })}>
+                  <Label className="mb-3 block">Category</Label>
+                  <Select
+                    value={filters.type}
+                    onValueChange={(value) =>
+                      setFilters({ ...filters, type: value })
+                    }
+                  >
                     <SelectTrigger className="rounded-lg">
                       <SelectValue placeholder="All types" />
                     </SelectTrigger>
                     <SelectContent>
-                      <SelectItem value="all">All types</SelectItem>
-                      <SelectItem value="mountain">Mountain Bike</SelectItem>
-                      <SelectItem value="road">Road Bike</SelectItem>
-                      <SelectItem value="city">City Bike</SelectItem>
-                      <SelectItem value="hybrid">Hybrid</SelectItem>
-                      <SelectItem value="electric">Electric</SelectItem>
+                      <SelectItem value="all">All categories</SelectItem>
+                      <SelectItem value="electronics">Electronics</SelectItem>
+                      <SelectItem value="books">Books</SelectItem>
+                      <SelectItem value="furniture">Furniture</SelectItem>
+                      <SelectItem value="fashion">Fashion</SelectItem>
+                      <SelectItem value="others">Others</SelectItem>
                     </SelectContent>
                   </Select>
                 </div>
 
                 <div>
                   <Label className="mb-3 block">
-                    Price Range: ₹{priceRange[0].toLocaleString()} - ₹{priceRange[1].toLocaleString()}
+                    Price Range: ₹{priceRange[0].toLocaleString()} - ₹
+                    {priceRange[1].toLocaleString()}
                   </Label>
                   <Slider
                     min={0}
@@ -148,7 +172,12 @@ const Explore = () => {
 
                 <div>
                   <Label className="mb-3 block">Sort By</Label>
-                  <Select value={filters.sort} onValueChange={(value) => setFilters({ ...filters, sort: value })}>
+                  <Select
+                    value={filters.sort}
+                    onValueChange={(value) =>
+                      setFilters({ ...filters, sort: value })
+                    }
+                  >
                     <SelectTrigger className="rounded-lg">
                       <SelectValue />
                     </SelectTrigger>
@@ -170,8 +199,12 @@ const Explore = () => {
                 </div>
               ) : bicycles.length === 0 ? (
                 <div className="text-center py-20">
-                  <p className="text-muted-foreground text-lg">No bicycles found</p>
-                  <p className="text-sm text-muted-foreground mt-2">Try adjusting your filters</p>
+                  <p className="text-muted-foreground text-lg">
+                    No products found
+                  </p>
+                  <p className="text-sm text-muted-foreground mt-2">
+                    Try adjusting your filters
+                  </p>
                 </div>
               ) : (
                 <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
@@ -181,9 +214,12 @@ const Explore = () => {
                       className="animate-fade-in-up"
                       style={{ animationDelay: `${index * 50}ms` }}
                     >
-                      <BicycleCard 
+                      <BicycleCard
                         id={bicycle._id}
-                        image={bicycle.images[0] || "https://images.unsplash.com/photo-1485965120184-e220f721d03e?w=800"}
+                        image={
+                          bicycle.images[0] ||
+                          "https://images.unsplash.com/photo-1485965120184-e220f721d03e?w=800"
+                        }
                         title={bicycle.title}
                         price={bicycle.price}
                         condition={bicycle.condition}

@@ -6,7 +6,13 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 import { Card } from "@/components/ui/card";
 import { Upload, X, Loader2 } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
@@ -27,7 +33,7 @@ const Sell = () => {
   const { toast } = useToast();
   const navigate = useNavigate();
 
-  const API_BASE = import.meta.env.VITE_API_URL || 'http://localhost:5000';
+  const API_BASE = import.meta.env.VITE_API_URL || "http://localhost:5000";
   const API_URL = `${API_BASE}/api/bicycles`;
 
   const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -66,7 +72,7 @@ const Sell = () => {
     if (!token) {
       toast({
         title: "Login Required",
-        description: "Please login to list your bicycle",
+        description: "Please login to list your product",
         variant: "destructive",
       });
       navigate("/login");
@@ -121,9 +127,9 @@ const Sell = () => {
       if (response.ok && data.success) {
         toast({
           title: "Success! 🎉",
-          description: "Your bicycle has been listed successfully",
+          description: "Your product has been listed successfully",
         });
-        
+
         // Reset form
         setFormData({
           title: "",
@@ -144,7 +150,7 @@ const Sell = () => {
       } else {
         toast({
           title: "Error",
-          description: data.message || "Failed to list bicycle",
+          description: data.message || "Failed to list product",
           variant: "destructive",
         });
       }
@@ -167,19 +173,30 @@ const Sell = () => {
       <div className="pt-24 pb-16 px-4">
         <div className="container mx-auto max-w-3xl">
           <div className="mb-8 animate-fade-in-up">
-            <h1 className="text-3xl md:text-4xl font-bold mb-2">Sell Your Bicycle</h1>
-            <p className="text-muted-foreground">List your bicycle in under 2 minutes</p>
+            <h1 className="text-3xl md:text-4xl font-bold mb-2">
+              Sell Your Product
+            </h1>
+            <p className="text-muted-foreground">
+              List your product in under 2 minutes
+            </p>
           </div>
 
           <Card className="p-6 md:p-8 shadow-medium border-border/50 animate-fade-in-up">
             <form onSubmit={handleSubmit} className="space-y-6">
               {/* Image Upload */}
               <div>
-                <Label className="mb-3 block">Photos (up to 5)</Label>
+                <Label className="mb-3 block">Product Images (up to 5)</Label>
                 <div className="grid grid-cols-2 md:grid-cols-5 gap-4">
                   {images.map((img, index) => (
-                    <div key={index} className="relative aspect-square rounded-xl overflow-hidden bg-muted">
-                      <img src={img} alt={`Upload ${index + 1}`} className="w-full h-full object-cover" />
+                    <div
+                      key={index}
+                      className="relative aspect-square rounded-xl overflow-hidden bg-muted"
+                    >
+                      <img
+                        src={img}
+                        alt={`Upload ${index + 1}`}
+                        className="w-full h-full object-cover"
+                      />
                       <button
                         type="button"
                         onClick={() => removeImage(index)}
@@ -192,7 +209,9 @@ const Sell = () => {
                   {images.length < 5 && (
                     <label className="aspect-square rounded-xl border-2 border-dashed border-border hover:border-secondary transition-colors cursor-pointer flex flex-col items-center justify-center gap-2 bg-muted/30">
                       <Upload className="w-6 h-6 text-muted-foreground" />
-                      <span className="text-xs text-muted-foreground">Upload</span>
+                      <span className="text-xs text-muted-foreground">
+                        Upload
+                      </span>
                       <input
                         type="file"
                         accept="image/*"
@@ -207,28 +226,32 @@ const Sell = () => {
 
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div className="space-y-2">
-                  <Label htmlFor="title">Bicycle Model / Title</Label>
-                  <Input 
-                    id="title" 
-                    placeholder="e.g., Trek Mountain Bike X5" 
-                    required 
+                  <Label htmlFor="title">Product Title</Label>
+                  <Input
+                    id="title"
+                    placeholder="e.g., Trek Mountain Bike X5"
+                    required
                     className="rounded-lg"
                     value={formData.title}
-                    onChange={(e) => setFormData({ ...formData, title: e.target.value })}
+                    onChange={(e) =>
+                      setFormData({ ...formData, title: e.target.value })
+                    }
                     disabled={isLoading}
                   />
                 </div>
 
                 <div className="space-y-2">
                   <Label htmlFor="price">Price (₹)</Label>
-                  <Input 
-                    id="price" 
-                    type="number" 
-                    placeholder="15000" 
-                    required 
+                  <Input
+                    id="price"
+                    type="number"
+                    placeholder="15000"
+                    required
                     className="rounded-lg"
                     value={formData.price}
-                    onChange={(e) => setFormData({ ...formData, price: e.target.value })}
+                    onChange={(e) =>
+                      setFormData({ ...formData, price: e.target.value })
+                    }
                     disabled={isLoading}
                   />
                 </div>
@@ -237,9 +260,11 @@ const Sell = () => {
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div className="space-y-2">
                   <Label htmlFor="condition">Condition</Label>
-                  <Select 
+                  <Select
                     value={formData.condition}
-                    onValueChange={(value) => setFormData({ ...formData, condition: value })}
+                    onValueChange={(value) =>
+                      setFormData({ ...formData, condition: value })
+                    }
                     disabled={isLoading}
                   >
                     <SelectTrigger id="condition" className="rounded-lg">
@@ -254,60 +279,63 @@ const Sell = () => {
                 </div>
 
                 <div className="space-y-2">
-                  <Label htmlFor="type">Bicycle Type</Label>
+                  <Label htmlFor="type">Category</Label>
                   <Select
                     value={formData.type}
-                    onValueChange={(value) => setFormData({ ...formData, type: value })}
+                    onValueChange={(value) =>
+                      setFormData({ ...formData, type: value })
+                    }
                     disabled={isLoading}
                   >
                     <SelectTrigger id="type" className="rounded-lg">
                       <SelectValue placeholder="Select type" />
                     </SelectTrigger>
                     <SelectContent>
-                      <SelectItem value="mountain">Mountain Bike</SelectItem>
-                      <SelectItem value="road">Road Bike</SelectItem>
-                      <SelectItem value="city">City Bike</SelectItem>
-                      <SelectItem value="hybrid">Hybrid</SelectItem>
-                      <SelectItem value="electric">Electric</SelectItem>
-                      <SelectItem value="bmx">BMX</SelectItem>
+                      <SelectItem value="electronics">Electronics</SelectItem>
+                      <SelectItem value="books">Books</SelectItem>
+                      <SelectItem value="furniture">Furniture</SelectItem>
+                      <SelectItem value="fashion">Fashion</SelectItem>
+                      <SelectItem value="others">Others</SelectItem>
                     </SelectContent>
                   </Select>
                 </div>
               </div>
 
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <div className="space-y-2">
-                  <Label htmlFor="gear">Gear Type</Label>
+                {/* <div className="space-y-2">
+                  <Label htmlFor="gear">Additional Details</Label>
                   <Select
                     value={formData.gearType}
-                    onValueChange={(value) => setFormData({ ...formData, gearType: value })}
+                    onValueChange={(value) =>
+                      setFormData({ ...formData, gearType: value })
+                    }
                     disabled={isLoading}
                   >
                     <SelectTrigger id="gear" className="rounded-lg">
                       <SelectValue placeholder="Select gear type" />
                     </SelectTrigger>
                     <SelectContent>
-                      <SelectItem value="no-gear">No Gear</SelectItem>
-                      <SelectItem value="single">Single Speed</SelectItem>
-                      <SelectItem value="7-speed">7-Speed</SelectItem>
-                      <SelectItem value="21-speed">21-Speed</SelectItem>
-                      <SelectItem value="24-speed">24-Speed</SelectItem>
+                      <SelectItem value="standard">Standard</SelectItem>
+                      <SelectItem value="premium">Premium</SelectItem>
+                      <SelectItem value="custom">Custom</SelectItem>
                     </SelectContent>
                   </Select>
-                </div>
+                </div> */}
 
                 <div className="space-y-2">
-                  <Label htmlFor="year">Purchase Year</Label>
-                  <Input 
-                    id="year" 
-                    type="number" 
-                    placeholder="2022" 
-                    min="1990" 
-                    max={new Date().getFullYear()} 
-                    required 
+                  <Label htmlFor="year">Year of Purchase</Label>
+                  <Input
+                    id="year"
+                    type="number"
+                    placeholder="2022"
+                    min="1990"
+                    max={new Date().getFullYear()}
+                    required
                     className="rounded-lg"
                     value={formData.purchaseYear}
-                    onChange={(e) => setFormData({ ...formData, purchaseYear: e.target.value })}
+                    onChange={(e) =>
+                      setFormData({ ...formData, purchaseYear: e.target.value })
+                    }
                     disabled={isLoading}
                   />
                 </div>
@@ -317,30 +345,32 @@ const Sell = () => {
                 <Label htmlFor="description">Description</Label>
                 <Textarea
                   id="description"
-                  placeholder="Describe your bicycle's condition, features, and reason for selling..."
+                  placeholder="Describe your product condition, features, and reason for selling..."
                   rows={5}
                   required
                   className="rounded-lg resize-none"
                   value={formData.description}
-                  onChange={(e) => setFormData({ ...formData, description: e.target.value })}
+                  onChange={(e) =>
+                    setFormData({ ...formData, description: e.target.value })
+                  }
                   disabled={isLoading}
                 />
               </div>
 
               <div className="pt-4">
-                <Button 
-                  type="submit" 
-                  size="lg" 
+                <Button
+                  type="submit"
+                  size="lg"
                   className="w-full rounded-full bg-gradient-primary border-0"
                   disabled={isLoading}
                 >
                   {isLoading ? (
                     <>
                       <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                      Listing Bicycle...
+                      Listing Product
                     </>
                   ) : (
-                    "List Bicycle"
+                    "List Product"
                   )}
                 </Button>
               </div>

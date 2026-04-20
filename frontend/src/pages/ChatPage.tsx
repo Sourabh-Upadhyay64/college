@@ -14,7 +14,7 @@ const Chat = () => {
   const navigate = useNavigate();
   const { toast } = useToast();
   const messagesEndRef = useRef<HTMLDivElement>(null);
-  
+
   const [chat, setChat] = useState<any>(null);
   const [message, setMessage] = useState("");
   const [loading, setLoading] = useState(true);
@@ -22,11 +22,11 @@ const Chat = () => {
   const [currentUser, setCurrentUser] = useState<any>(null);
 
   useEffect(() => {
-    const token = localStorage.getItem('token');
-    const userStr = localStorage.getItem('user');
-    
+    const token = localStorage.getItem("token");
+    const userStr = localStorage.getItem("user");
+
     if (!token) {
-      navigate('/login');
+      navigate("/login");
       return;
     }
 
@@ -46,13 +46,13 @@ const Chat = () => {
   };
 
   const fetchChat = async () => {
-    const token = localStorage.getItem('token');
-    
+    const token = localStorage.getItem("token");
+
     try {
       const response = await fetch(`${API_URL}/api/chats/${id}`, {
         headers: {
-          'Authorization': `Bearer ${token}`
-        }
+          Authorization: `Bearer ${token}`,
+        },
       });
 
       const data = await response.json();
@@ -67,7 +67,7 @@ const Chat = () => {
         });
       }
     } catch (error) {
-      console.error('Error fetching chat:', error);
+      console.error("Error fetching chat:", error);
       toast({
         title: "Error",
         description: "Failed to load chat",
@@ -80,20 +80,20 @@ const Chat = () => {
 
   const handleSendMessage = async (e: React.FormEvent) => {
     e.preventDefault();
-    
+
     if (!message.trim() || sending) return;
 
-    const token = localStorage.getItem('token');
+    const token = localStorage.getItem("token");
     setSending(true);
 
     try {
       const response = await fetch(`${API_URL}/api/chats/${id}/messages`, {
-        method: 'POST',
+        method: "POST",
         headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${token}`
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
         },
-        body: JSON.stringify({ content: message })
+        body: JSON.stringify({ content: message }),
       });
 
       const data = await response.json();
@@ -109,7 +109,7 @@ const Chat = () => {
         });
       }
     } catch (error) {
-      console.error('Error sending message:', error);
+      console.error("Error sending message:", error);
       toast({
         title: "Error",
         description: "Failed to send message",
@@ -141,20 +141,25 @@ const Chat = () => {
         <div className="pt-24 pb-16 px-4 flex items-center justify-center">
           <div className="text-center">
             <h2 className="text-2xl font-bold mb-2">Chat Not Found</h2>
-            <p className="text-muted-foreground mb-4">The chat you're looking for doesn't exist.</p>
-            <Button onClick={() => navigate('/explore')}>Back to Explore</Button>
+            <p className="text-muted-foreground mb-4">
+              The chat you're looking for doesn't exist.
+            </p>
+            <Button onClick={() => navigate("/explore")}>
+              Back to Products
+            </Button>
           </div>
         </div>
       </div>
     );
   }
 
-  const otherUser = currentUser?.id === chat.buyer._id ? chat.seller : chat.buyer;
+  const otherUser =
+    currentUser?.id === chat.buyer._id ? chat.seller : chat.buyer;
 
   return (
     <div className="min-h-screen bg-background flex flex-col">
       <Navbar />
-      
+
       <div className="flex-1 pt-20 pb-4 px-4">
         <div className="container mx-auto max-w-4xl h-full flex flex-col">
           {/* Chat Header */}
@@ -175,30 +180,42 @@ const Chat = () => {
                 </Avatar>
                 <div>
                   <h2 className="font-semibold">{otherUser.name}</h2>
-                  <p className="text-sm text-muted-foreground">{otherUser.email}</p>
+                  <p className="text-sm text-muted-foreground">
+                    {otherUser.email}
+                  </p>
                 </div>
               </div>
-              
+
               {/* Bicycle Info */}
-              <div 
+              <div
                 className="flex items-center gap-3 cursor-pointer hover:bg-muted p-2 rounded-lg transition-colors"
                 onClick={() => navigate(`/bicycle/${chat.bicycle._id}`)}
               >
-                <img 
-                  src={chat.bicycle.images?.[0] || "https://images.unsplash.com/photo-1485965120184-e220f721d03e?w=100"} 
+                <img
+                  src={
+                    chat.bicycle.images?.[0] ||
+                    "https://images.unsplash.com/photo-1485965120184-e220f721d03e?w=100"
+                  }
                   alt={chat.bicycle.title}
                   className="w-12 h-12 rounded-lg object-cover"
                 />
                 <div className="text-right">
-                  <p className="text-sm font-medium line-clamp-1">{chat.bicycle.title}</p>
-                  <p className="text-sm text-primary font-semibold">₹{chat.bicycle.price?.toLocaleString()}</p>
+                  <p className="text-sm font-medium line-clamp-1">
+                    {chat.bicycle.title}
+                  </p>
+                  <p className="text-sm text-primary font-semibold">
+                    ₹{chat.bicycle.price?.toLocaleString()}
+                  </p>
                 </div>
               </div>
             </div>
           </Card>
 
           {/* Messages Container */}
-          <Card className="flex-1 p-4 overflow-hidden flex flex-col" style={{maxHeight: 'calc(100vh - 250px)'}}>
+          <Card
+            className="flex-1 p-4 overflow-hidden flex flex-col"
+            style={{ maxHeight: "calc(100vh - 250px)" }}
+          >
             <div className="flex-1 overflow-y-auto space-y-4 mb-4">
               {chat.messages.length === 0 ? (
                 <div className="flex items-center justify-center h-full">
@@ -210,13 +227,15 @@ const Chat = () => {
               ) : (
                 chat.messages.map((msg: any, index: number) => {
                   const isOwnMessage = msg.sender._id === currentUser?.id;
-                  
+
                   return (
                     <div
                       key={index}
-                      className={`flex ${isOwnMessage ? 'justify-end' : 'justify-start'}`}
+                      className={`flex ${isOwnMessage ? "justify-end" : "justify-start"}`}
                     >
-                      <div className={`flex gap-2 max-w-[70%] ${isOwnMessage ? 'flex-row-reverse' : 'flex-row'}`}>
+                      <div
+                        className={`flex gap-2 max-w-[70%] ${isOwnMessage ? "flex-row-reverse" : "flex-row"}`}
+                      >
                         <Avatar className="w-8 h-8">
                           <AvatarFallback className="text-xs">
                             {msg.sender.name?.charAt(0).toUpperCase()}
@@ -226,16 +245,16 @@ const Chat = () => {
                           <div
                             className={`p-3 rounded-2xl ${
                               isOwnMessage
-                                ? 'bg-primary text-primary-foreground'
-                                : 'bg-muted'
+                                ? "bg-primary text-primary-foreground"
+                                : "bg-muted"
                             }`}
                           >
                             <p className="text-sm break-words">{msg.content}</p>
                           </div>
                           <p className="text-xs text-muted-foreground mt-1 px-2">
-                            {new Date(msg.timestamp).toLocaleTimeString([], { 
-                              hour: '2-digit', 
-                              minute: '2-digit' 
+                            {new Date(msg.timestamp).toLocaleTimeString([], {
+                              hour: "2-digit",
+                              minute: "2-digit",
                             })}
                           </p>
                         </div>
@@ -256,9 +275,9 @@ const Chat = () => {
                 className="flex-1"
                 disabled={sending}
               />
-              <Button 
-                type="submit" 
-                size="icon" 
+              <Button
+                type="submit"
+                size="icon"
                 disabled={!message.trim() || sending}
               >
                 <Send className="w-4 h-4" />

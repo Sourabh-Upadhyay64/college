@@ -3,7 +3,13 @@ import { Link, useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
 import { ArrowLeft, Bike, Loader2 } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 
@@ -14,7 +20,7 @@ const Login = () => {
   const { toast } = useToast();
   const navigate = useNavigate();
 
-  const API_BASE = import.meta.env.VITE_API_URL || 'http://localhost:5000';
+  const API_BASE = import.meta.env.VITE_API_URL || "http://localhost:5000";
   const API_URL = `${API_BASE}/api/auth`;
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -49,12 +55,12 @@ const Login = () => {
         // Store token and user data
         localStorage.setItem("token", data.data.token);
         localStorage.setItem("user", JSON.stringify(data.data.user));
-        
+
         toast({
           title: "Welcome back! 🎉",
-          description: "You have successfully logged in",
+          description: "You have successfully logged in to your account",
         });
-        
+
         // Redirect to explore page
         setTimeout(() => {
           navigate("/explore");
@@ -80,7 +86,10 @@ const Login = () => {
   return (
     <div className="min-h-screen bg-gradient-to-br from-background via-muted/20 to-background flex items-center justify-center p-4">
       <div className="w-full max-w-md animate-fade-in-up">
-        <Link to="/" className="inline-flex items-center gap-2 text-sm text-muted-foreground hover:text-foreground mb-6 transition-colors">
+        <Link
+          to="/"
+          className="inline-flex items-center gap-2 text-sm text-muted-foreground hover:text-foreground mb-6 transition-colors"
+        >
           <ArrowLeft size={16} />
           Back to home
         </Link>
@@ -90,12 +99,16 @@ const Login = () => {
             <div className="flex justify-center">
               <div className="flex items-center gap-2">
                 <Bike className="h-10 w-10 text-primary" />
-                <span className="text-2xl font-bold text-foreground">CampusCycles</span>
+                <span className="text-2xl font-bold text-foreground">
+                  CampusBazaar
+                </span>
               </div>
             </div>
             <div>
               <CardTitle className="text-2xl">Welcome Back</CardTitle>
-              <CardDescription>Sign in to your account to continue</CardDescription>
+              <CardDescription>
+                Sign in to your account to continue buying and selling
+              </CardDescription>
             </div>
           </CardHeader>
           <CardContent>
@@ -113,7 +126,7 @@ const Login = () => {
                   className="rounded-lg"
                 />
                 <p className="text-xs text-muted-foreground">
-                  Only verified @birlainstitute.co.in emails can login
+                  Use your college email to access the marketplace
                 </p>
               </div>
 
@@ -131,8 +144,8 @@ const Login = () => {
                 />
               </div>
 
-              <Button 
-                type="submit" 
+              <Button
+                type="submit"
                 className="w-full rounded-full bg-gradient-primary border-0"
                 disabled={isLoading}
               >
@@ -148,7 +161,10 @@ const Login = () => {
 
               <div className="text-center text-sm text-muted-foreground">
                 Don't have an account?{" "}
-                <Link to="/signup" className="text-secondary hover:underline font-medium">
+                <Link
+                  to="/signup"
+                  className="text-secondary hover:underline font-medium"
+                >
                   Create account
                 </Link>
               </div>

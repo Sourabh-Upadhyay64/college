@@ -3,7 +3,13 @@ import { Link, useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
 import { ArrowLeft, Bike, Loader2, Mail } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import {
@@ -27,7 +33,7 @@ const Signup = () => {
   const { toast } = useToast();
   const navigate = useNavigate();
 
-  const API_BASE = import.meta.env.VITE_API_URL || 'http://localhost:5000';
+  const API_BASE = import.meta.env.VITE_API_URL || "http://localhost:5000";
   const API_URL = `${API_BASE}/api/auth`;
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -85,7 +91,8 @@ const Signup = () => {
         setShowOtpInput(true);
         toast({
           title: "Success!",
-          description: "OTP has been sent to your email. Please check your inbox.",
+          description:
+            "OTP has been sent to your email. Please check your inbox.",
         });
       } else {
         toast({
@@ -135,12 +142,12 @@ const Signup = () => {
         // Store token in localStorage
         localStorage.setItem("token", data.data.token);
         localStorage.setItem("user", JSON.stringify(data.data.user));
-        
+
         toast({
           title: "Welcome! 🎉",
           description: "Your account has been verified successfully",
         });
-        
+
         // Redirect to explore page
         setTimeout(() => {
           navigate("/explore");
@@ -206,7 +213,10 @@ const Signup = () => {
   return (
     <div className="min-h-screen bg-gradient-to-br from-background via-muted/20 to-background flex items-center justify-center p-4">
       <div className="w-full max-w-md animate-fade-in-up">
-        <Link to="/" className="inline-flex items-center gap-2 text-sm text-muted-foreground hover:text-foreground mb-6 transition-colors">
+        <Link
+          to="/"
+          className="inline-flex items-center gap-2 text-sm text-muted-foreground hover:text-foreground mb-6 transition-colors"
+        >
           <ArrowLeft size={16} />
           Back to home
         </Link>
@@ -216,7 +226,9 @@ const Signup = () => {
             <div className="flex justify-center">
               <div className="flex items-center gap-2">
                 <Bike className="h-10 w-10 text-primary" />
-                <span className="text-2xl font-bold text-foreground">CampusCycles</span>
+                <span className="text-2xl font-bold text-foreground">
+                  CampusBazaar
+                </span>
               </div>
             </div>
             <div>
@@ -226,7 +238,7 @@ const Signup = () => {
               <CardDescription>
                 {showOtpInput
                   ? "Enter the OTP sent to your email"
-                  : "Join your campus bicycle marketplace"}
+                  : "Join your campus marketplace"}
               </CardDescription>
             </div>
           </CardHeader>
@@ -240,7 +252,9 @@ const Signup = () => {
                     type="text"
                     placeholder="John Doe"
                     value={formData.name}
-                    onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+                    onChange={(e) =>
+                      setFormData({ ...formData, name: e.target.value })
+                    }
                     required
                     disabled={isLoading}
                     className="rounded-lg"
@@ -254,7 +268,9 @@ const Signup = () => {
                     type="email"
                     placeholder="name@birlainstitute.co.in"
                     value={formData.email}
-                    onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+                    onChange={(e) =>
+                      setFormData({ ...formData, email: e.target.value })
+                    }
                     required
                     disabled={isLoading}
                     className="rounded-lg"
@@ -271,7 +287,9 @@ const Signup = () => {
                     type="tel"
                     placeholder="1234567890"
                     value={formData.phone}
-                    onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
+                    onChange={(e) =>
+                      setFormData({ ...formData, phone: e.target.value })
+                    }
                     disabled={isLoading}
                     className="rounded-lg"
                   />
@@ -284,7 +302,9 @@ const Signup = () => {
                     type="password"
                     placeholder="Min. 6 characters"
                     value={formData.password}
-                    onChange={(e) => setFormData({ ...formData, password: e.target.value })}
+                    onChange={(e) =>
+                      setFormData({ ...formData, password: e.target.value })
+                    }
                     required
                     disabled={isLoading}
                     className="rounded-lg"
@@ -298,15 +318,20 @@ const Signup = () => {
                     type="password"
                     placeholder="Re-enter password"
                     value={formData.confirmPassword}
-                    onChange={(e) => setFormData({ ...formData, confirmPassword: e.target.value })}
+                    onChange={(e) =>
+                      setFormData({
+                        ...formData,
+                        confirmPassword: e.target.value,
+                      })
+                    }
                     required
                     disabled={isLoading}
                     className="rounded-lg"
                   />
                 </div>
 
-                <Button 
-                  type="submit" 
+                <Button
+                  type="submit"
                   className="w-full rounded-full bg-gradient-primary border-0"
                   disabled={isLoading}
                 >
@@ -322,7 +347,10 @@ const Signup = () => {
 
                 <div className="text-center text-sm text-muted-foreground">
                   Already have an account?{" "}
-                  <Link to="/login" className="text-secondary hover:underline font-medium">
+                  <Link
+                    to="/login"
+                    className="text-secondary hover:underline font-medium"
+                  >
                     Sign in
                   </Link>
                 </div>

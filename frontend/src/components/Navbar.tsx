@@ -8,7 +8,16 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { Menu, X, Bike, User, LogOut, Settings, Package, MessageCircle } from "lucide-react";
+import {
+  Menu,
+  X,
+  Bike,
+  User,
+  LogOut,
+  Settings,
+  Package,
+  MessageCircle,
+} from "lucide-react";
 import { useState, useEffect } from "react";
 import { API_URL } from "@/config/api";
 
@@ -24,7 +33,7 @@ const Navbar = () => {
     // Check if user is logged in
     const token = localStorage.getItem("token");
     const user = localStorage.getItem("user");
-    
+
     if (token && user) {
       setIsLoggedIn(true);
       try {
@@ -44,13 +53,15 @@ const Navbar = () => {
     try {
       const response = await fetch(`${API_URL}/api/chats`, {
         headers: {
-          'Authorization': `Bearer ${token}`
-        }
+          Authorization: `Bearer ${token}`,
+        },
       });
       const data = await response.json();
       if (data.success) {
         // Count unread messages
-        const currentUserId = JSON.parse(localStorage.getItem("user") || "{}").id;
+        const currentUserId = JSON.parse(
+          localStorage.getItem("user") || "{}",
+        ).id;
         let count = 0;
         data.data.chats.forEach((chat: any) => {
           chat.messages.forEach((msg: any) => {
@@ -86,9 +97,14 @@ const Navbar = () => {
     <nav className="fixed top-0 left-0 right-0 z-50 bg-background/95 backdrop-blur-sm border-b border-border">
       <div className="container mx-auto px-4">
         <div className="flex items-center justify-between h-16 md:h-20">
-          <Link to="/" className="flex items-center gap-2 hover:opacity-80 transition-opacity">
+          <Link
+            to="/"
+            className="flex items-center gap-2 hover:opacity-80 transition-opacity"
+          >
             <Bike className="h-7 w-7 md:h-8 md:w-8 text-primary" />
-            <span className="text-xl md:text-2xl font-bold text-foreground">CampusCycles</span>
+            <span className="text-xl md:text-2xl font-bold text-foreground">
+              CampusBazaar
+            </span>
           </Link>
 
           {/* Desktop Navigation */}
@@ -114,26 +130,31 @@ const Navbar = () => {
                     <MessageCircle className="h-5 w-5" />
                     {unreadCount > 0 && (
                       <span className="absolute -top-1 -right-1 bg-red-500 text-white text-xs rounded-full h-5 w-5 flex items-center justify-center">
-                        {unreadCount > 9 ? '9+' : unreadCount}
+                        {unreadCount > 9 ? "9+" : unreadCount}
                       </span>
                     )}
                   </Button>
                 </Link>
                 <Link to="/sell">
                   <Button variant="outline" className="rounded-full">
-                    Sell Bicycle
+                    Sell Product
                   </Button>
                 </Link>
                 <DropdownMenu>
                   <DropdownMenuTrigger asChild>
-                    <Button variant="ghost" className="rounded-full h-10 w-10 p-0">
+                    <Button
+                      variant="ghost"
+                      className="rounded-full h-10 w-10 p-0"
+                    >
                       <User className="h-5 w-5" />
                     </Button>
                   </DropdownMenuTrigger>
                   <DropdownMenuContent align="end" className="w-56">
                     <DropdownMenuLabel>
                       <div className="flex flex-col space-y-1">
-                        <p className="text-sm font-medium leading-none">{userName}</p>
+                        <p className="text-sm font-medium leading-none">
+                          {userName}
+                        </p>
                         <p className="text-xs leading-none text-muted-foreground">
                           Manage your account
                         </p>
@@ -169,7 +190,7 @@ const Navbar = () => {
                 </Link>
                 <Link to="/explore">
                   <Button className="rounded-full bg-gradient-primary border-0">
-                    Browse Cycles
+                    Browse Product
                   </Button>
                 </Link>
               </>
@@ -204,12 +225,15 @@ const Navbar = () => {
               {isLoggedIn ? (
                 <>
                   <Link to="/chat" onClick={() => setIsOpen(false)}>
-                    <Button variant="outline" className="w-full rounded-full relative">
+                    <Button
+                      variant="outline"
+                      className="w-full rounded-full relative"
+                    >
                       <MessageCircle className="mr-2 h-4 w-4" />
                       Messages
                       {unreadCount > 0 && (
                         <span className="ml-auto bg-red-500 text-white text-xs rounded-full h-5 w-5 flex items-center justify-center">
-                          {unreadCount > 9 ? '9+' : unreadCount}
+                          {unreadCount > 9 ? "9+" : unreadCount}
                         </span>
                       )}
                     </Button>
@@ -228,7 +252,7 @@ const Navbar = () => {
                   </Link>
                   <Link to="/sell" onClick={() => setIsOpen(false)}>
                     <Button variant="outline" className="w-full rounded-full">
-                      Sell Bicycle
+                      Sell Product
                     </Button>
                   </Link>
                   <Button
@@ -252,7 +276,7 @@ const Navbar = () => {
                   </Link>
                   <Link to="/explore" onClick={() => setIsOpen(false)}>
                     <Button className="w-full rounded-full bg-gradient-primary border-0">
-                      Browse Cycles
+                      Browse Product
                     </Button>
                   </Link>
                 </>
