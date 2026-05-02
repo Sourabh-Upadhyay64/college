@@ -9,28 +9,28 @@ const Clients = () => {
       name: "Priya Sharma",
       college: "Delhi University",
       image: "https://api.dicebear.com/7.x/avataaars/svg?seed=Priya",
-      text: "I sold my bicycle within 2 days! The platform is so easy to use and I felt safe knowing everyone is a verified student.",
+      text: "I sold my product within 2 days! The platform is so easy to use and I felt safe knowing everyone is a verified student.",
       rating: 5,
     },
     {
       name: "Arjun Mehta",
       college: "IIT Bombay",
       image: "https://api.dicebear.com/7.x/avataaars/svg?seed=Arjun",
-      text: "Found an amazing mountain bike at half the price. The chat feature made it super easy to connect with the seller.",
+      text: "Found an amazing product at half the price. The chat feature made it super easy to connect with the seller.",
       rating: 5,
     },
     {
       name: "Sneha Patel",
       college: "Mumbai University",
       image: "https://api.dicebear.com/7.x/avataaars/svg?seed=Sneha",
-      text: "This platform changed how we trade bicycles on campus. No more spam or fake listings. Highly recommend!",
+      text: "This platform changed how we trade products on campus. No more spam or fake listings. Highly recommend!",
       rating: 5,
     },
     {
       name: "Rahul Kumar",
       college: "Bangalore University",
       image: "https://api.dicebear.com/7.x/avataaars/svg?seed=Rahul",
-      text: "As an international student, this made finding affordable transportation so much easier. Great community!",
+      text: "As an international student, this made finding affordable products so much easier. Great community!",
       rating: 5,
     },
     {
@@ -44,14 +44,14 @@ const Clients = () => {
       name: "Vikram Reddy",
       college: "Hyderabad College",
       image: "https://api.dicebear.com/7.x/avataaars/svg?seed=Vikram",
-      text: "Listed my old bicycle and got multiple offers. The platform's design is beautiful and really user-friendly!",
+      text: "Listed my old product and got multiple offers. The platform's design is beautiful and really user-friendly!",
       rating: 5,
     },
   ];
 
   const stats = [
     { number: "500+", label: "Active Students" },
-    { number: "200+", label: "Bicycles Sold" },
+    { number: "200+", label: "Products Sold" },
     { number: "15+", label: "Partner Colleges" },
     { number: "98%", label: "Satisfaction Rate" },
   ];
@@ -63,10 +63,12 @@ const Clients = () => {
       <div className="pt-24 pb-16 px-4">
         <div className="container mx-auto max-w-6xl">
           <div className="text-center mb-16 animate-fade-in-up">
-            <h1 className="text-4xl md:text-5xl font-bold mb-4">What Students Say</h1>
+            <h1 className="text-4xl md:text-5xl font-bold mb-4">
+              What Students Say
+            </h1>
             <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-              Real experiences from students across campuses who've bought and sold bicycles through
-              our platform
+              Real experiences from students across campuses who've bought and
+              sold products through our platform
             </p>
           </div>
 
@@ -92,7 +94,9 @@ const Clients = () => {
               >
                 <CardContent className="p-6">
                   <Quote className="w-8 h-8 text-secondary mb-4" />
-                  <p className="text-muted-foreground mb-6 leading-relaxed">{testimonial.text}</p>
+                  <p className="text-muted-foreground mb-6 leading-relaxed">
+                    {testimonial.text}
+                  </p>
                   <div className="flex items-center gap-3">
                     <img
                       src={testimonial.image}
@@ -101,12 +105,16 @@ const Clients = () => {
                     />
                     <div>
                       <div className="font-semibold">{testimonial.name}</div>
-                      <div className="text-sm text-muted-foreground">{testimonial.college}</div>
+                      <div className="text-sm text-muted-foreground">
+                        {testimonial.college}
+                      </div>
                     </div>
                   </div>
                   <div className="flex gap-1 mt-4">
                     {[...Array(testimonial.rating)].map((_, i) => (
-                      <div key={i} className="w-4 h-4 text-accent">★</div>
+                      <div key={i} className="w-4 h-4 text-accent">
+                        ★
+                      </div>
                     ))}
                   </div>
                 </CardContent>
@@ -119,7 +127,8 @@ const Clients = () => {
               Join Our Growing Community
             </h2>
             <p className="text-lg opacity-90 mb-8 max-w-2xl mx-auto">
-              Be part of a trusted network of student cyclists making sustainable choices
+              Be part of a trusted network of students buying and selling
+              products safely
             </p>
             <a href="/signup">
               <button className="px-8 py-3 bg-white text-primary rounded-full font-medium hover:bg-white/90 transition-colors">

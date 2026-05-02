@@ -21,19 +21,19 @@ const FAQ = () => {
         "During signup, you'll need to use your official college email address (e.g., name@college.edu). We'll send a verification link to confirm your account.",
     },
     {
-      question: "Is it free to list a bicycle?",
+      question: "Is it free to list a product?",
       answer:
-        "Yes! Listing your bicycle is completely free. There are no hidden charges or commissions.",
+        "Yes! Listing your product is completely free. There are no hidden charges or commissions.",
     },
     {
       question: "How do I communicate with buyers/sellers?",
       answer:
-        "Once you're interested in a listing, you can use our built-in chat feature to communicate directly with the seller. Your email remains private until you choose to share it.",
+        "Once you're interested in a listing, you can use our built-in chat feature to communicate directly with the seller about the product.",
     },
     {
       question: "What happens after I find a buyer?",
       answer:
-        "You can arrange a meeting place on campus through the chat. We recommend meeting in public areas and checking the bicycle condition before finalizing the deal.",
+        "You can arrange a meeting place on campus through the chat. We recommend meeting in public areas and checking the product condition before finalizing the deal.",
     },
     {
       question: "How do I report suspicious listings?",
@@ -46,9 +46,9 @@ const FAQ = () => {
         "Yes! Go to 'My Listings' from the navigation menu, and you'll see options to edit or delete your listings anytime.",
     },
     {
-      question: "What types of bicycles can I sell?",
+      question: "What types of products can I sell?",
       answer:
-        "You can sell any type of bicycle - mountain bikes, road bikes, city bikes, hybrid bikes, electric bikes, BMX, and more. Just make sure to accurately describe the condition.",
+        "You can sell a wide variety of products such as electronics, books, furniture, fashion items, and more. Just make sure to accurately describe the condition and details.",
     },
   ];
 
@@ -63,11 +63,16 @@ const FAQ = () => {
               Frequently Asked Questions
             </h1>
             <p className="text-muted-foreground text-lg">
-              Everything you need to know about buying and selling bicycles on campus
+              Everything you need to know about buying and selling products on
+              campus
             </p>
           </div>
 
-          <Accordion type="single" collapsible className="space-y-4 animate-fade-in-up">
+          <Accordion
+            type="single"
+            collapsible
+            className="space-y-4 animate-fade-in-up"
+          >
             {faqs.map((faq, index) => (
               <AccordionItem
                 key={index}
@@ -85,7 +90,9 @@ const FAQ = () => {
           </Accordion>
 
           <div className="mt-12 text-center bg-muted/30 rounded-2xl p-8">
-            <h3 className="font-semibold text-lg mb-2">Still have questions?</h3>
+            <h3 className="font-semibold text-lg mb-2">
+              Still have questions?
+            </h3>
             <p className="text-muted-foreground mb-4">
               Can't find the answer you're looking for? Feel free to reach out.
             </p>
