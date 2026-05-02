@@ -156,6 +156,8 @@ const Chat = () => {
   const otherUser =
     currentUser?.id === chat.buyer._id ? chat.seller : chat.buyer;
 
+  const item = chat.product || chat.bicycle;
+
   return (
     <div className="min-h-screen bg-background flex flex-col">
       <Navbar />
@@ -186,28 +188,30 @@ const Chat = () => {
                 </div>
               </div>
 
-              {/* Bicycle Info */}
-              <div
-                className="flex items-center gap-3 cursor-pointer hover:bg-muted p-2 rounded-lg transition-colors"
-                onClick={() => navigate(`/bicycle/${chat.bicycle._id}`)}
-              >
-                <img
-                  src={
-                    chat.bicycle.images?.[0] ||
-                    "https://images.unsplash.com/photo-1485965120184-e220f721d03e?w=100"
-                  }
-                  alt={chat.bicycle.title}
-                  className="w-12 h-12 rounded-lg object-cover"
-                />
-                <div className="text-right">
-                  <p className="text-sm font-medium line-clamp-1">
-                    {chat.bicycle.title}
-                  </p>
-                  <p className="text-sm text-primary font-semibold">
-                    ₹{chat.bicycle.price?.toLocaleString()}
-                  </p>
+              {/* Item Info */}
+              {item && (
+                <div
+                  className="flex items-center gap-3 cursor-pointer hover:bg-muted p-2 rounded-lg transition-colors"
+                  onClick={() => navigate(`/bicycle/${item._id}`)}
+                >
+                  <img
+                    src={
+                      item.images?.[0] ||
+                      "https://images.unsplash.com/photo-1485965120184-e220f721d03e?w=100"
+                    }
+                    alt={item.title}
+                    className="w-12 h-12 rounded-lg object-cover"
+                  />
+                  <div className="text-right">
+                    <p className="text-sm font-medium line-clamp-1">
+                      {item.title}
+                    </p>
+                    <p className="text-sm text-primary font-semibold">
+                      ₹{item.price?.toLocaleString()}
+                    </p>
+                  </div>
                 </div>
-              </div>
+              )}
             </div>
           </Card>
 

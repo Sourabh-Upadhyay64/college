@@ -177,30 +177,41 @@ const Chat = () => {
                           </div>
                         </div>
 
-                        <div className="flex items-center gap-2 mb-2">
-                          <Package className="w-4 h-4 text-muted-foreground" />
-                          <span className="text-sm text-muted-foreground truncate">
-                            {chat.bicycle.title}
-                          </span>
-                          <span className="text-sm font-semibold text-primary">
-                            ₹{chat.bicycle.price?.toLocaleString()}
-                          </span>
-                        </div>
+                        {(() => {
+                          const item = chat.product || chat.bicycle;
+                          if (!item) return null;
+                          return (
+                            <>
+                              <div className="flex items-center gap-2 mb-2">
+                                <Package className="w-4 h-4 text-muted-foreground" />
+                                <span className="text-sm text-muted-foreground truncate">
+                                  {item.title}
+                                </span>
+                                <span className="text-sm font-semibold text-primary">
+                                  ₹{item.price?.toLocaleString()}
+                                </span>
+                              </div>
 
-                        <p
-                          className={`text-sm truncate ${unreadCount > 0 ? "font-semibold" : "text-muted-foreground"}`}
-                        >
-                          {lastMessage}
-                        </p>
+                              <p
+                                className={`text-sm truncate ${unreadCount > 0 ? "font-semibold" : "text-muted-foreground"}`}
+                              >
+                                {lastMessage}
+                              </p>
+                            </>
+                          );
+                        })()}
                       </div>
 
-                      {chat.bicycle.images?.[0] && (
-                        <img
-                          src={chat.bicycle.images[0]}
-                          alt={chat.bicycle.title}
-                          className="w-16 h-16 rounded-lg object-cover"
-                        />
-                      )}
+                      {(() => {
+                        const item = chat.product || chat.bicycle;
+                        return item?.images?.[0] ? (
+                          <img
+                            src={item.images[0]}
+                            alt={item.title}
+                            className="w-16 h-16 rounded-lg object-cover"
+                          />
+                        ) : null;
+                      })()}
                     </div>
                   </Card>
                 );
