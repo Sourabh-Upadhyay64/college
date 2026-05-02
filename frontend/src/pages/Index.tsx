@@ -15,7 +15,7 @@ const Index = () => {
     {
       icon: Zap,
       title: "Quick & Easy",
-      description: "List your bicycle in under 2 minutes and start selling instantly",
+      description: "List your products in under 2 minutes and start selling instantly",
     },
     {
       icon: Users,
@@ -33,7 +33,7 @@ const Index = () => {
     {
       step: "2",
       title: "List or Browse",
-      description: "Post your bicycle or find your perfect ride",
+      description: "Post your products or find what you need",
     },
     {
       step: "3",
@@ -51,11 +51,11 @@ const Index = () => {
         <div className="container mx-auto text-center space-y-8 animate-fade-in-up">
           <Badge className="bg-secondary/10 text-secondary border-secondary/20 hover:bg-secondary/20">
             <Zap className="w-3 h-3 mr-1" />
-            Sustainable Campus Transportation
+            Verified Campus Marketplace
           </Badge>
 
           <h1 className="text-4xl md:text-6xl lg:text-7xl font-bold tracking-tight max-w-4xl mx-auto">
-            Buy & Sell Bicycles
+            Buy & Sell Anything
             <br />
             <span className="bg-gradient-primary bg-clip-text text-transparent">
               Within Your Community
@@ -63,18 +63,18 @@ const Index = () => {
           </h1>
 
           <p className="text-lg md:text-xl text-muted-foreground max-w-2xl mx-auto">
-            Verified members only · Safe transactions · Sustainable living
+            Verified students only · Safe transactions · Everything from books to bicycles
           </p>
 
           <div className="flex flex-col sm:flex-row gap-4 justify-center items-center pt-4">
             <Link to="/explore">
               <Button size="lg" className="rounded-full bg-gradient-primary border-0 px-8 text-base hover:opacity-90 transition-opacity">
-                Browse Cycles
+                Browse Products
               </Button>
             </Link>
             <Link to="/sell">
               <Button size="lg" variant="outline" className="rounded-full px-8 text-base">
-                Sell Your Cycle
+                Sell Your Products
               </Button>
             </Link>
           </div>
@@ -129,7 +129,7 @@ const Index = () => {
         <div className="container mx-auto text-center space-y-6">
           <h2 className="text-3xl md:text-4xl font-bold">Ready to Get Started?</h2>
           <p className="text-lg opacity-90 max-w-2xl mx-auto">
-            Join our community of verified members buying and selling bicycles
+            Join our community of verified students buying and selling products
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center pt-4">
             <Link to="/signup">

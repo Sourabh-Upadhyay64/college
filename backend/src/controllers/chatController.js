@@ -1,5 +1,6 @@
 import Chat from '../models/Chat.js';
 import Bicycle from '../models/Bicycle.js';
+import Product from '../models/Product.js';
 import { formatErrorResponse, formatSuccessResponse } from '../utils/helpers.js';
 
 // @desc    Get or create a chat
@@ -7,53 +8,77 @@ import { formatErrorResponse, formatSuccessResponse } from '../utils/helpers.js'
 // @access  Private
 export const getOrCreateChat = async (req, res) => {
   try {
-    const { bicycleId } = req.body;
+    const { bicycleId, productId } = req.body;
     const buyerId = req.user.id;
 
-    if (!bicycleId) {
+    if (!bicycleId && !productId) {
       return res.status(400).json(
-        formatErrorResponse('Please provide bicycle ID')
+        formatErrorResponse('Please provide bicycle ID or product ID')
       );
     }
 
-    // Get bicycle details
-    const bicycle = await Bicycle.findById(bicycleId).populate('seller');
+    let item, itemId, itemModel;
+
+    // Check if it's a bicycle or product
+    if (productId) {
+      item = await Product.findById(productId).populate('seller');
+      itemId = productId;
+      itemModel = 'product';
+    } else {
+      item = await Bicycle.findById(bicycleId).populate('seller');
+      itemId = bicycleId;
+      itemModel = 'bicycle';
+    }
     
-    if (!bicycle) {
+    if (!item) {
       return res.status(404).json(
-        formatErrorResponse('Bicycle not found')
+        formatErrorResponse('Item not found')
       );
     }
 
     // Check if user is trying to chat with themselves
-    if (bicycle.seller._id.toString() === buyerId) {
+    if (item.seller._id.toString() === buyerId) {
       return res.status(400).json(
         formatErrorResponse('You cannot chat with yourself')
       );
     }
 
     // Check if chat already exists
-    let chat = await Chat.findOne({
-      bicycle: bicycleId,
+    const query = {
       buyer: buyerId,
-      seller: bicycle.seller._id
-    })
+      seller: item.seller._id
+    };
+    if (itemModel === 'product') {
+      query.product = itemId;
+    } else {
+      query.bicycle = itemId;
+    }
+
+    let chat = await Chat.findOne(query)
       .populate('buyer', 'name email phone profilePicture')
       .populate('seller', 'name email phone profilePicture')
+      .populate('product', 'title price images condition category')
       .populate('bicycle', 'title price images condition');
 
     // Create new chat if it doesn't exist
     if (!chat) {
-      chat = await Chat.create({
-        bicycle: bicycleId,
+      const chatData = {
         buyer: buyerId,
-        seller: bicycle.seller._id,
+        seller: item.seller._id,
         messages: []
-      });
+      };
+      if (itemModel === 'product') {
+        chatData.product = itemId;
+      } else {
+        chatData.bicycle = itemId;
+      }
+
+      chat = await Chat.create(chatData);
 
       chat = await Chat.findById(chat._id)
         .populate('buyer', 'name email phone profilePicture')
         .populate('seller', 'name email phone profilePicture')
+        .populate('product', 'title price images condition category')
         .populate('bicycle', 'title price images condition');
     }
 
@@ -80,6 +105,7 @@ export const getUserChats = async (req, res) => {
     })
       .populate('buyer', 'name email phone profilePicture')
       .populate('seller', 'name email phone profilePicture')
+      .populate('product', 'title price images condition category')
       .populate('bicycle', 'title price images condition')
       .sort({ lastMessage: -1 });
 
@@ -138,6 +164,7 @@ export const sendMessage = async (req, res) => {
     const updatedChat = await Chat.findById(id)
       .populate('buyer', 'name email phone profilePicture')
       .populate('seller', 'name email phone profilePicture')
+      .populate('product', 'title price images condition category')
       .populate('bicycle', 'title price images condition')
       .populate('messages.sender', 'name profilePicture');
 
@@ -159,10 +186,10 @@ export const getChatById = async (req, res) => {
   try {
     const { id } = req.params;
     const userId = req.user.id;
-
     const chat = await Chat.findById(id)
       .populate('buyer', 'name email phone profilePicture')
       .populate('seller', 'name email phone profilePicture')
+      .populate('product', 'title price images condition category')
       .populate('bicycle', 'title price images condition')
       .populate('messages.sender', 'name profilePicture');
 

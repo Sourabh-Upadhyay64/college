@@ -9,10 +9,10 @@ const Footer = () => {
           <div className="space-y-4">
             <div className="flex items-center gap-2">
               <Bike className="h-8 w-8" />
-              <span className="text-xl font-bold">CampusCycles</span>
+              <span className="text-xl font-bold">CampusMarket</span>
             </div>
             <p className="text-sm opacity-90">
-              Campus bicycle marketplace for verified students. Sustainable, secure, spam-free.
+              Campus marketplace for verified students. Buy and sell anything securely. Spam-free.
             </p>
           </div>
 
@@ -47,12 +47,12 @@ const Footer = () => {
             <ul className="space-y-2 text-sm">
               <li>
                 <Link to="/explore" className="opacity-90 hover:opacity-100 transition-opacity">
-                  Browse Bicycles
+                  Browse Products
                 </Link>
               </li>
               <li>
                 <Link to="/sell" className="opacity-90 hover:opacity-100 transition-opacity">
-                  Sell Your Cycle
+                  Sell Your Products
                 </Link>
               </li>
               <li>
@@ -73,7 +73,7 @@ const Footer = () => {
             <ul className="space-y-3 text-sm">
               <li className="flex items-center gap-2 opacity-90">
                 <Mail size={16} />
-                <span>info@dev-evelopers.com</span>
+                <span>info@campusmarket.com</span>
               </li>
               <li className="flex items-center gap-2 opacity-90">
                 <Phone size={16} />
@@ -88,7 +88,7 @@ const Footer = () => {
         </div>
 
         <div className="border-t border-primary-foreground/20 mt-8 pt-8 text-center text-sm opacity-75">
-          <p>&copy; 2025 CampusCycles. All rights reserved.</p>
+          <p>&copy; 2025 CampusMarket. All rights reserved.</p>
         </div>
       </div>
     </footer>

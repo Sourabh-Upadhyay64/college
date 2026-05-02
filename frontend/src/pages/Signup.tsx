@@ -53,14 +53,14 @@ const Signup = () => {
     }
 
     // Check email domain
-    if (!formData.email.endsWith("@birlainstitute.co.in")) {
-      toast({
-        title: "Invalid Email Domain",
-        description: "Only @birlainstitute.co.in emails are allowed",
-        variant: "destructive",
-      });
-      return;
-    }
+    // if (!formData.email.endsWith("@birlainstitute.co.in")) {
+    //   toast({
+    //     title: "Invalid Email Domain",
+    //     description: "Only @birlainstitute.co.in emails are allowed",
+    //     variant: "destructive",
+    //   });
+    //   return;
+    // }
 
     setIsLoading(true);
 
@@ -141,9 +141,14 @@ const Signup = () => {
           description: "Your account has been verified successfully",
         });
         
-        // Redirect to explore page
+        // Redirect based on user preference
+        const userType = localStorage.getItem("userType");
         setTimeout(() => {
-          navigate("/explore");
+          if (userType === "seller") {
+            navigate("/sell");
+          } else {
+            navigate("/explore");
+          }
         }, 1000);
       } else {
         toast({

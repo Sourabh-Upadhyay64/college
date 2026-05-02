@@ -55,9 +55,14 @@ const Login = () => {
           description: "You have successfully logged in",
         });
         
-        // Redirect to explore page
+        // Redirect based on user preference
+        const userType = localStorage.getItem("userType");
         setTimeout(() => {
-          navigate("/explore");
+          if (userType === "seller") {
+            navigate("/sell");
+          } else {
+            navigate("/explore");
+          }
         }, 1000);
       } else {
         toast({

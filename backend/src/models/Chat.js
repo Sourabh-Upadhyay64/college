@@ -22,10 +22,13 @@ const messageSchema = new mongoose.Schema({
 });
 
 const chatSchema = new mongoose.Schema({
+  product: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'Product'
+  },
   bicycle: {
     type: mongoose.Schema.Types.ObjectId,
-    ref: 'Bicycle',
-    required: true
+    ref: 'Bicycle'
   },
   buyer: {
     type: mongoose.Schema.Types.ObjectId,
@@ -48,7 +51,17 @@ const chatSchema = new mongoose.Schema({
   }
 });
 
+// Custom validation to ensure at least one of product or bicycle is present
+chatSchema.pre('save', function(next) {
+  if (!this.product && !this.bicycle) {
+    next(new Error('Either product or bicycle must be specified'));
+  } else {
+    next();
+  }
+});
+
 // Index for faster queries
+chatSchema.index({ buyer: 1, seller: 1, product: 1 });
 chatSchema.index({ buyer: 1, seller: 1, bicycle: 1 });
 chatSchema.index({ lastMessage: -1 });
 

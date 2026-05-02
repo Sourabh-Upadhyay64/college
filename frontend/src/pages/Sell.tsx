@@ -18,9 +18,9 @@ const Sell = () => {
     title: "",
     price: "",
     condition: "",
-    type: "",
-    gearType: "",
-    purchaseYear: "",
+    category: "",
+    subcategory: "",
+    location: "",
     description: "",
   });
   const [isLoading, setIsLoading] = useState(false);
@@ -28,7 +28,7 @@ const Sell = () => {
   const navigate = useNavigate();
 
   const API_BASE = import.meta.env.VITE_API_URL || 'http://localhost:5000';
-  const API_URL = `${API_BASE}/api/bicycles`;
+  const API_URL = `${API_BASE}/api/products`;
 
   const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
     const files = e.target.files;
@@ -66,7 +66,7 @@ const Sell = () => {
     if (!token) {
       toast({
         title: "Login Required",
-        description: "Please login to list your bicycle",
+        description: "Please login to list your product",
         variant: "destructive",
       });
       navigate("/login");
@@ -83,7 +83,7 @@ const Sell = () => {
       return;
     }
 
-    if (!formData.condition || !formData.type || !formData.gearType) {
+    if (!formData.condition || !formData.category) {
       toast({
         title: "Missing Information",
         description: "Please fill all the required fields",
@@ -109,9 +109,9 @@ const Sell = () => {
           description: formData.description,
           price: Number(formData.price),
           condition: formData.condition,
-          type: formData.type,
-          gearType: formData.gearType,
-          purchaseYear: Number(formData.purchaseYear),
+          category: formData.category,
+          subcategory: formData.subcategory,
+          location: formData.location,
           images: base64Images,
         }),
       });
@@ -121,7 +121,7 @@ const Sell = () => {
       if (response.ok && data.success) {
         toast({
           title: "Success! 🎉",
-          description: "Your bicycle has been listed successfully",
+          description: "Your product has been listed successfully",
         });
         
         // Reset form
@@ -129,9 +129,9 @@ const Sell = () => {
           title: "",
           price: "",
           condition: "",
-          type: "",
-          gearType: "",
-          purchaseYear: "",
+          category: "",
+          subcategory: "",
+          location: "",
           description: "",
         });
         setImages([]);
@@ -144,12 +144,12 @@ const Sell = () => {
       } else {
         toast({
           title: "Error",
-          description: data.message || "Failed to list bicycle",
+          description: data.message || "Failed to list product",
           variant: "destructive",
         });
       }
     } catch (error) {
-      console.error("List bicycle error:", error);
+      console.error("List product error:", error);
       toast({
         title: "Error",
         description: "Failed to connect to server. Please try again.",
@@ -167,8 +167,8 @@ const Sell = () => {
       <div className="pt-24 pb-16 px-4">
         <div className="container mx-auto max-w-3xl">
           <div className="mb-8 animate-fade-in-up">
-            <h1 className="text-3xl md:text-4xl font-bold mb-2">Sell Your Bicycle</h1>
-            <p className="text-muted-foreground">List your bicycle in under 2 minutes</p>
+            <h1 className="text-3xl md:text-4xl font-bold mb-2">Sell Your Product</h1>
+            <p className="text-muted-foreground">List your product in under 2 minutes</p>
           </div>
 
           <Card className="p-6 md:p-8 shadow-medium border-border/50 animate-fade-in-up">
@@ -207,10 +207,10 @@ const Sell = () => {
 
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div className="space-y-2">
-                  <Label htmlFor="title">Bicycle Model / Title</Label>
+                  <Label htmlFor="title">Product Title</Label>
                   <Input 
                     id="title" 
-                    placeholder="e.g., Trek Mountain Bike X5" 
+                    placeholder="e.g., iPhone 13 Pro 128GB" 
                     required 
                     className="rounded-lg"
                     value={formData.title}
@@ -236,6 +236,32 @@ const Sell = () => {
 
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div className="space-y-2">
+                  <Label htmlFor="category">Category</Label>
+                  <Select
+                    value={formData.category}
+                    onValueChange={(value) => setFormData({ ...formData, category: value })}
+                    disabled={isLoading}
+                  >
+                    <SelectTrigger id="category" className="rounded-lg">
+                      <SelectValue placeholder="Select category" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="bicycles">Bicycles</SelectItem>
+                      <SelectItem value="electronics">Electronics</SelectItem>
+                      <SelectItem value="books">Books</SelectItem>
+                      <SelectItem value="furniture">Furniture</SelectItem>
+                      <SelectItem value="clothing">Clothing</SelectItem>
+                      <SelectItem value="sports">Sports Equipment</SelectItem>
+                      <SelectItem value="musical-instruments">Musical Instruments</SelectItem>
+                      <SelectItem value="vehicles">Vehicles</SelectItem>
+                      <SelectItem value="appliances">Appliances</SelectItem>
+                      <SelectItem value="accessories">Accessories</SelectItem>
+                      <SelectItem value="other">Other</SelectItem>
+                    </SelectContent>
+                  </Select>
+                </div>
+
+                <div className="space-y-2">
                   <Label htmlFor="condition">Condition</Label>
                   <Select 
                     value={formData.condition}
@@ -247,29 +273,10 @@ const Sell = () => {
                     </SelectTrigger>
                     <SelectContent>
                       <SelectItem value="new">New</SelectItem>
+                      <SelectItem value="like-new">Like New</SelectItem>
                       <SelectItem value="good">Good</SelectItem>
+                      <SelectItem value="fair">Fair</SelectItem>
                       <SelectItem value="used">Used</SelectItem>
-                    </SelectContent>
-                  </Select>
-                </div>
-
-                <div className="space-y-2">
-                  <Label htmlFor="type">Bicycle Type</Label>
-                  <Select
-                    value={formData.type}
-                    onValueChange={(value) => setFormData({ ...formData, type: value })}
-                    disabled={isLoading}
-                  >
-                    <SelectTrigger id="type" className="rounded-lg">
-                      <SelectValue placeholder="Select type" />
-                    </SelectTrigger>
-                    <SelectContent>
-                      <SelectItem value="mountain">Mountain Bike</SelectItem>
-                      <SelectItem value="road">Road Bike</SelectItem>
-                      <SelectItem value="city">City Bike</SelectItem>
-                      <SelectItem value="hybrid">Hybrid</SelectItem>
-                      <SelectItem value="electric">Electric</SelectItem>
-                      <SelectItem value="bmx">BMX</SelectItem>
                     </SelectContent>
                   </Select>
                 </div>
@@ -277,37 +284,25 @@ const Sell = () => {
 
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div className="space-y-2">
-                  <Label htmlFor="gear">Gear Type</Label>
-                  <Select
-                    value={formData.gearType}
-                    onValueChange={(value) => setFormData({ ...formData, gearType: value })}
+                  <Label htmlFor="subcategory">Subcategory (Optional)</Label>
+                  <Input 
+                    id="subcategory" 
+                    placeholder="e.g., Mountain Bike, Laptop, Novel" 
+                    className="rounded-lg"
+                    value={formData.subcategory}
+                    onChange={(e) => setFormData({ ...formData, subcategory: e.target.value })}
                     disabled={isLoading}
-                  >
-                    <SelectTrigger id="gear" className="rounded-lg">
-                      <SelectValue placeholder="Select gear type" />
-                    </SelectTrigger>
-                    <SelectContent>
-                      <SelectItem value="no-gear">No Gear</SelectItem>
-                      <SelectItem value="single">Single Speed</SelectItem>
-                      <SelectItem value="7-speed">7-Speed</SelectItem>
-                      <SelectItem value="21-speed">21-Speed</SelectItem>
-                      <SelectItem value="24-speed">24-Speed</SelectItem>
-                    </SelectContent>
-                  </Select>
+                  />
                 </div>
 
                 <div className="space-y-2">
-                  <Label htmlFor="year">Purchase Year</Label>
+                  <Label htmlFor="location">Location (Optional)</Label>
                   <Input 
-                    id="year" 
-                    type="number" 
-                    placeholder="2022" 
-                    min="1990" 
-                    max={new Date().getFullYear()} 
-                    required 
+                    id="location" 
+                    placeholder="e.g., Hostel Block A, Main Campus" 
                     className="rounded-lg"
-                    value={formData.purchaseYear}
-                    onChange={(e) => setFormData({ ...formData, purchaseYear: e.target.value })}
+                    value={formData.location}
+                    onChange={(e) => setFormData({ ...formData, location: e.target.value })}
                     disabled={isLoading}
                   />
                 </div>
@@ -317,7 +312,7 @@ const Sell = () => {
                 <Label htmlFor="description">Description</Label>
                 <Textarea
                   id="description"
-                  placeholder="Describe your bicycle's condition, features, and reason for selling..."
+                  placeholder="Describe your product's condition, features, and reason for selling..."
                   rows={5}
                   required
                   className="rounded-lg resize-none"
@@ -337,10 +332,10 @@ const Sell = () => {
                   {isLoading ? (
                     <>
                       <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                      Listing Bicycle...
+                      Listing Product...
                     </>
                   ) : (
-                    "List Bicycle"
+                    "List Product"
                   )}
                 </Button>
               </div>

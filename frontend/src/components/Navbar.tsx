@@ -47,6 +47,12 @@ const Navbar = () => {
           'Authorization': `Bearer ${token}`
         }
       });
+      
+      // Ignore 401 errors silently (user not logged in)
+      if (response.status === 401) {
+        return;
+      }
+      
       const data = await response.json();
       if (data.success) {
         // Count unread messages
@@ -62,7 +68,8 @@ const Navbar = () => {
         setUnreadCount(count);
       }
     } catch (error) {
-      console.error("Error fetching unread count:", error);
+      // Silently handle errors
+      console.log("Chat fetch error (expected if not logged in)");
     }
   };
 
@@ -74,7 +81,8 @@ const Navbar = () => {
   };
 
   const navItems = [
-    { name: "Home", path: "/" },
+    { name: "Explore", path: "/" },
+    { name: "Home", path: "/home" },
     { name: "About", path: "/about" },
     { name: "Services", path: "/services" },
     { name: "FAQ", path: "/faq" },
@@ -85,10 +93,10 @@ const Navbar = () => {
   return (
     <nav className="fixed top-0 left-0 right-0 z-50 bg-background/95 backdrop-blur-sm border-b border-border">
       <div className="container mx-auto px-4">
-        <div className="flex items-center justify-between h-16 md:h-20">
+        <div className="flex items-center justify-between h-16 md:h-18">
           <Link to="/" className="flex items-center gap-2 hover:opacity-80 transition-opacity">
             <Bike className="h-7 w-7 md:h-8 md:w-8 text-primary" />
-            <span className="text-xl md:text-2xl font-bold text-foreground">CampusCycles</span>
+            <span className="text-xl md:text-2xl font-bold text-foreground">CampusMarket</span>
           </Link>
 
           {/* Desktop Navigation */}
@@ -119,9 +127,9 @@ const Navbar = () => {
                     )}
                   </Button>
                 </Link>
-                <Link to="/sell">
-                  <Button variant="outline" className="rounded-full">
-                    Sell Bicycle
+                <Link to="/sell" className="ml-2">
+                  <Button className="rounded-full bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white font-bold tracking-wide border-0 shadow-md transform transition-all hover:scale-105 px-6">
+                    + SELL
                   </Button>
                 </Link>
                 <DropdownMenu>
@@ -161,18 +169,21 @@ const Navbar = () => {
                 </DropdownMenu>
               </>
             ) : (
-              <>
-                <Link to="/login">
-                  <Button variant="outline" className="rounded-full">
-                    Login
+              <div className="flex items-center gap-3">
+                <Link to="/login" className="text-sm font-medium text-foreground hover:underline mr-2">
+                  Login
+                </Link>
+                <Link to="/signup">
+                  <Button variant="outline" className="rounded-full shadow-sm hover:border-primary/50">
+                    Sign Up
                   </Button>
                 </Link>
-                <Link to="/explore">
-                  <Button className="rounded-full bg-gradient-primary border-0">
-                    Browse Cycles
+                <Link to="/sell" className="ml-2">
+                  <Button className="rounded-full bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white font-bold tracking-wide border-0 shadow-md transform transition-all hover:scale-105 px-6">
+                    + SELL
                   </Button>
                 </Link>
-              </>
+              </div>
             )}
           </div>
 
@@ -228,7 +239,7 @@ const Navbar = () => {
                   </Link>
                   <Link to="/sell" onClick={() => setIsOpen(false)}>
                     <Button variant="outline" className="w-full rounded-full">
-                      Sell Bicycle
+                      Sell Product
                     </Button>
                   </Link>
                   <Button
@@ -252,7 +263,7 @@ const Navbar = () => {
                   </Link>
                   <Link to="/explore" onClick={() => setIsOpen(false)}>
                     <Button className="w-full rounded-full bg-gradient-primary border-0">
-                      Browse Cycles
+                      Browse Products
                     </Button>
                   </Link>
                 </>

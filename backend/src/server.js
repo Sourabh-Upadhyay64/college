@@ -4,6 +4,7 @@ import cors from 'cors';
 import connectDB from './config/database.js';
 import authRoutes from './routes/authRoutes.js';
 import bicycleRoutes from './routes/bicycleRoutes.js';
+import productRoutes from './routes/productRoutes.js';
 import chatRoutes from './routes/chatRoutes.js';
 import { errorHandler, notFound } from './middleware/errorMiddleware.js';
 
@@ -40,14 +41,15 @@ app.get('/', (req, res) => {
     endpoints: {
       auth: '/api/auth',
       bicycles: '/api/bicycles',
+      products: '/api/products',
       chats: '/api/chats'
     }
   });
 });
-
 // API Routes
 app.use('/api/auth', authRoutes);
 app.use('/api/bicycles', bicycleRoutes);
+app.use('/api/products', productRoutes);
 app.use('/api/chats', chatRoutes);
 
 // Error handling middleware
@@ -79,8 +81,15 @@ app.listen(PORT, () => {
 ║   - POST   /api/bicycles                                  ║
 ║   - GET    /api/bicycles/:id                              ║
 ║   - PUT    /api/bicycles/:id                              ║
-║   - DELETE /api/bicycles/:id                              ║
 ║   - GET    /api/bicycles/my-listings                      ║
+║                                                           ║
+║   Product Endpoints:                                      ║
+║   - GET    /api/products                                  ║
+║   - POST   /api/products                                  ║
+║   - GET    /api/products/:id                              ║
+║   - PUT    /api/products/:id                              ║
+║   - DELETE /api/products/:id                              ║
+║   - GET    /api/products/my-listings                      ║
 ║                                                           ║
 ║   Chat Endpoints:                                         ║
 ║   - POST   /api/chats                                     ║

@@ -18,13 +18,13 @@ export const signup = async (req, res) => {
     }
 
     // Validate email domain
-    if (!validateEmailDomain(email)) {
-      return res.status(403).json(
-        formatErrorResponse(
-          `Only users with @${process.env.ALLOWED_EMAIL_DOMAIN} email addresses can register`
-        )
-      );
-    }
+    // if (!validateEmailDomain(email)) {
+    //   return res.status(403).json(
+    //     formatErrorResponse(
+    //       `Only users with @${process.env.ALLOWED_EMAIL_DOMAIN} email addresses can register`
+    //     )
+    //   );
+    // }
 
     // Check if user already exists
     const existingUser = await User.findOne({ email });

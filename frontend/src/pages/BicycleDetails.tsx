@@ -17,6 +17,7 @@ const BicycleDetails = () => {
   const [loading, setLoading] = useState(true);
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
   const [currentUser, setCurrentUser] = useState<any>(null);
+  const [isProduct, setIsProduct] = useState(false);
 
   useEffect(() => {
     // Get current user
@@ -25,29 +26,40 @@ const BicycleDetails = () => {
       setCurrentUser(JSON.parse(userStr));
     }
 
-    // Fetch bicycle details
-    fetchBicycleDetails();
+    // Fetch details
+    fetchDetails();
   }, [id]);
 
-  const fetchBicycleDetails = async () => {
+  const fetchDetails = async () => {
     try {
-      const response = await fetch(`${API_URL}/api/bicycles/${id}`);
-      const data = await response.json();
+      // Try fetching as product first
+      let response = await fetch(`${API_URL}/api/products/${id}`);
+      let data = await response.json();
 
       if (data.success) {
-        setBicycle(data.data.bicycle);
+        setBicycle(data.data.product);
+        setIsProduct(true);
       } else {
-        toast({
-          title: "Error",
-          description: data.message || "Failed to load bicycle details",
-          variant: "destructive",
-        });
+        // If not found as product, try as bicycle
+        response = await fetch(`${API_URL}/api/bicycles/${id}`);
+        data = await response.json();
+
+        if (data.success) {
+          setBicycle(data.data.bicycle);
+          setIsProduct(false);
+        } else {
+          toast({
+            title: "Error",
+            description: data.message || "Failed to load details",
+            variant: "destructive",
+          });
+        }
       }
     } catch (error) {
-      console.error('Error fetching bicycle:', error);
+      console.error('Error fetching details:', error);
       toast({
         title: "Error",
-        description: "Failed to load bicycle details",
+        description: "Failed to load details",
         variant: "destructive",
       });
     } finally {
@@ -69,13 +81,15 @@ const BicycleDetails = () => {
     }
 
     try {
+      const requestBody = isProduct ? { productId: id } : { bicycleId: id };
+      
       const response = await fetch(`${API_URL}/api/chats`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
           'Authorization': `Bearer ${token}`
         },
-        body: JSON.stringify({ bicycleId: id })
+        body: JSON.stringify(requestBody)
       });
 
       const data = await response.json();
@@ -106,7 +120,7 @@ const BicycleDetails = () => {
         <div className="pt-24 pb-16 px-4 flex items-center justify-center">
           <div className="text-center">
             <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary mx-auto mb-4"></div>
-            <p className="text-muted-foreground">Loading bicycle details...</p>
+            <p className="text-muted-foreground">Loading details...</p>
           </div>
         </div>
         <Footer />
@@ -120,8 +134,8 @@ const BicycleDetails = () => {
         <Navbar />
         <div className="pt-24 pb-16 px-4 flex items-center justify-center">
           <div className="text-center">
-            <h2 className="text-2xl font-bold mb-2">Bicycle Not Found</h2>
-            <p className="text-muted-foreground mb-4">The bicycle you're looking for doesn't exist.</p>
+            <h2 className="text-2xl font-bold mb-2">Product Not Found</h2>
+            <p className="text-muted-foreground mb-4">The product you're looking for doesn't exist.</p>
             <Button onClick={() => navigate('/explore')}>Back to Explore</Button>
           </div>
         </div>
@@ -188,22 +202,49 @@ const BicycleDetails = () => {
 
               <Card className="p-6 space-y-4 border-border/50">
                 <div className="grid grid-cols-2 gap-4 text-sm">
-                  <div>
-                    <p className="text-muted-foreground mb-1">Type</p>
-                    <p className="font-medium">{bicycle.type}</p>
-                  </div>
-                  <div>
-                    <p className="text-muted-foreground mb-1">Gear</p>
-                    <p className="font-medium">{bicycle.gearType}</p>
-                  </div>
-                  <div>
-                    <p className="text-muted-foreground mb-1">Purchase Year</p>
-                    <p className="font-medium">{bicycle.purchaseYear}</p>
-                  </div>
-                  <div>
-                    <p className="text-muted-foreground mb-1">Condition</p>
-                    <p className="font-medium">{bicycle.condition}</p>
-                  </div>
+                  {isProduct ? (
+                    <>
+                      <div>
+                        <p className="text-muted-foreground mb-1">Category</p>
+                        <p className="font-medium capitalize">{bicycle.category}</p>
+                      </div>
+                      {bicycle.subcategory && (
+                        <div>
+                          <p className="text-muted-foreground mb-1">Subcategory</p>
+                          <p className="font-medium">{bicycle.subcategory}</p>
+                        </div>
+                      )}
+                      {bicycle.location && (
+                        <div>
+                          <p className="text-muted-foreground mb-1">Location</p>
+                          <p className="font-medium">{bicycle.location}</p>
+                        </div>
+                      )}
+                      <div>
+                        <p className="text-muted-foreground mb-1">Condition</p>
+                        <p className="font-medium capitalize">{bicycle.condition}</p>
+                      </div>
+                    </>
+                  ) : (
+                    <>
+                      <div>
+                        <p className="text-muted-foreground mb-1">Type</p>
+                        <p className="font-medium">{bicycle.type}</p>
+                      </div>
+                      <div>
+                        <p className="text-muted-foreground mb-1">Gear</p>
+                        <p className="font-medium">{bicycle.gearType}</p>
+                      </div>
+                      <div>
+                        <p className="text-muted-foreground mb-1">Purchase Year</p>
+                        <p className="font-medium">{bicycle.purchaseYear}</p>
+                      </div>
+                      <div>
+                        <p className="text-muted-foreground mb-1">Condition</p>
+                        <p className="font-medium">{bicycle.condition}</p>
+                      </div>
+                    </>
+                  )}
                 </div>
               </Card>
 

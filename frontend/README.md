@@ -1,6 +1,6 @@
-# Bicycle Marketplace - Frontend
+# CampusMarket - Frontend
 
-React-based frontend for the Bicycle Marketplace application.
+React-based frontend for the CampusMarket application - a verified campus marketplace where students can buy and sell anything from electronics to bicycles.
 
 ## Setup
 
